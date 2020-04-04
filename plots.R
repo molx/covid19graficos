@@ -21,7 +21,7 @@ library(gganimate)
 #   tail(-29)
 
 datastyle <- list(theme_light(), geom_line(size = 1), geom_point(),
-                  scale_x_date(date_breaks = "1 day", date_minor_breaks = "1 day",
+                  scale_x_date(date_breaks = "2 days", date_minor_breaks = "1 day",
                                date_labels = "%d/%m"),
                   theme(axis.text.x = element_text(angle = 45, hjust = 1),
                         plot.title = element_text(hjust = 0.5),
@@ -503,7 +503,9 @@ death_time_plot <- death_time_data %>%
   ggtitle("Óbitos - Brasil") + 
   labs(y = "Óbitos") +
   annotate("text", x = death_time_data$date[1], y = max(death_time_data$total_deaths) * 1.01, 
-           label = "Fonte: Ministério da Saúde", hjust = 0, vjust = 0)
+           label = "Fonte: Ministério da Saúde", hjust = 0, vjust = 0) +
+  annotate("text", x = max(death_time_data$date), y = last(death_time_data$total_deaths), 
+           label = max(death_time_data$total_deaths), hjust = 1.1)
 
 death_time_plot
 

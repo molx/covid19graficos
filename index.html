@@ -61,6 +61,7 @@
                     <li>Passe o mouse sobre os pontos para ver os valores exatos.</li>
                     <li>Clique e arraste no gráfico para aproximar na região.</li>
                     <li>Utilize os botões para mudar o tipo de escala.</li>
+                    <li>Clique no nome de uma série na legenda para ocultá-la.</li>
                     <li>Clique no botão do menu para ver em tela cheia e exportar.</li>
                 </ul>
             </div>
@@ -80,7 +81,8 @@
             <h4>Estados separadamente</h4><br>
             <span>Selecione um estado: </span>
             <select id="sel_estado"></select><br>
-            <div id="estado_casos" class="plot plotNarrow plotShort"></div><div id="estado_obitos" class="plot plotNarrow plotShort"></div>            
+            <div id="estado_casos" class="plot plotNarrow plotShort"></div><div id="estado_obitos" class="plot plotNarrow plotShort"></div>
+            <div id="estado_novoscasos" class="plot plotNarrow plotShort"></div><div id="estado_novosobitos" class="plot plotNarrow plotShort"></div>
             <h4>Comparações entre estados</h4><br>
             <div id="estados_casos" class="plot plotNarrow plotTall"></div><div id="estados_obitos" class="plot plotNarrow plotTall"></div>
             <div id="estados_comp" class="plot plotWide plotTall"></div>
@@ -90,6 +92,7 @@
             <div id="regiao_casos" class="plot plotNarrow plotShort"></div><div id="regiao_obitos" class="plot plotNarrow plotShort"></div>
             <h3>Comparações com outros países</h3>
             <div id="world_comp" class="plot plotWide plotTall"></div>
+            <div id="world_comp_obitos" class="plot plotWide plotTall"></div>
             <!-- -->
             <h3 id="heading_fontes">Fontes dos dados</h3>
             <p>Os dados referentes ao Brasil são retirados do site do Ministério da Saúde:</p>
