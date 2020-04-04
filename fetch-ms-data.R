@@ -7,7 +7,12 @@ library(WriteXLS)
 library(jsonlite)
 
 url <- "https://xx9p7hp1p7.execute-api.us-east-1.amazonaws.com/prod/PortalMapa"
+#url <- "https://xx9p7hp1p7.execute-api.us-east-1.amazonaws.com/prod/PortalGeral"
 res <- GET(url, add_headers("x-parse-application-id" = "unAFkcaNDeXajurGB7LChj8SgQYS2ptm"))
+
+tmp <- parse_json(content(res, "text"), simplifyVector = TRUE)[[1]]
+tmp$arquivo$url
+
 
 calc_new <- function(x) {
   new <- x - lag(x)

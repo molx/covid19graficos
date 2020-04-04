@@ -5,9 +5,13 @@
 <head>
     <meta charset='utf-8'>
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <meta name="description" content="COVID-19 no Brasil">
+    <meta name="description" content="Gráficos detalhados do avanço da COVID-19 no Brasil">
     <link href='images/favicon.ico' rel='icon' type='image/x-icon' />
     <meta property="og:image" content="http://covid19graficos.com.br/images/ogimage.png" />
+    <meta property="og:url" content="http://covid19graficos.com.br/" />
+    <meta property="og:description" content="Gráficos detalhados do avanço da COVID-19 no Brasil."/>
+    <meta property="og:locale" content="pt_BR"/>
+    <meta property="og:type" content="website" />
     
     <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
     <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/plots.css">
@@ -18,7 +22,7 @@
     <script src="js/palette.js"></script>
     <script src="js/papaparse.min.js"></script>
     <script src="js/data.js"></script>
-    <script src="js/proc.min.js"></script>    
+    <script src="js/proc.js"></script>    
     
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-162813521-1"></script>
     <script>
@@ -79,12 +83,12 @@
             <div id="estado_casos" class="plot plotNarrow plotShort"></div><div id="estado_obitos" class="plot plotNarrow plotShort"></div>            
             <h4>Comparações entre estados</h4><br>
             <div id="estados_casos" class="plot plotNarrow plotTall"></div><div id="estados_obitos" class="plot plotNarrow plotTall"></div>
+            <div id="estados_comp" class="plot plotWide plotTall"></div>
             <h4>Comparações por regiões</h4><br>
             <span>Selecione uma região:</span>
             <select id="sel_regiao"></select><br>
             <div id="regiao_casos" class="plot plotNarrow plotShort"></div><div id="regiao_obitos" class="plot plotNarrow plotShort"></div>
-            <div id="estados_comp" class="plot plotWide plotTall"></div>
-            
+            <h3>Comparações com outros países</h3>
             <div id="world_comp" class="plot plotWide plotTall"></div>
             <!-- -->
             <h3 id="heading_fontes">Fontes dos dados</h3>
@@ -92,8 +96,8 @@
             <p><a href="https://covid.saude.gov.br/">https://covid.saude.gov.br/</a></p>
             <p>Os dados também podem ser obtidos nos boletins diários publicados na <a href="https://www.saude.gov.br/noticias/agencia-saude">Agência Saúde</a>.</p>
 
-            <p>Como o MS só disponibiliza os dados do último dia, os dados completos (séries temporais) podem ser obtidos aqui:</p>
-            <p><a href="data/estados.csv">http://www.alanmol.com.br/covid-19/data/estados.csv</a></p>
+            <p>O MS passou a disponibilizar os dados completos com as séries temporais, mas caso deseje você pode baixar os dados utilizados neste site aqui:</p>
+            <p><a href="data/estados.csv">http://covid19graficos.com.br/data/estados.csv</a></p>
 
             <p>Os dados referentes a outros países são retirados do projeto Our World in Data, da Universidade de Oxford:</p>
             <p><a href="https://ourworldindata.org/coronavirus-source-data">https://ourworldindata.org/coronavirus-source-data</a></p>
@@ -102,11 +106,13 @@
             <p>Diversos grupos estão compilando seus próprios dados e criando diferentes visualizações referente ao Coronavirus. Alguns destes são listados abaixo:</p>
             <ul>
                 <li><a href="https://covid19br.github.io/index.html">Observatório COVID-19 BR</a></li>
+                <li><a href="http://covid19br.org/">Painel Coronavirus Brasil (Fiocruz Bahia/UFBA)</a></li>
+                <li><a href="https://www.coronavirusnobrasil.org/">Casos de COVID-19 no Brasil (Rice University)</a></li>
                 <li><a href="https://paternogbc.github.io/covid19br/index.html">Pacote de R com os dados do Brasil (covid19br)</a></li>
                 <li><a href="https://liibre.github.io/coronabr/index.html">Pacote de R com os dados do Brasil e gráficos (coronabr)</a></li>
-                <li><a href="https://www.kaggle.com/unanimad/corona-virus-brazil">Repositório Kaggle com dados do Brasil por estado</a>
-                    <br/>
-                    <span style="font-size: small;">Os dados podem diferir um pouco dos apresentados aqui por diferenças nas referências (Secretarias Estaduais vs Ministério da Saúde)</span></li>
+                <li><a href="https://www.kaggle.com/unanimad/corona-virus-brazil">Repositório Kaggle com dados do Brasil por estado</a></li>
+                
+                    
             </ul>
             <p>Sites internacionais com informações de todo o mundo:</p>
             <ul>
