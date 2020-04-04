@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="description" content="COVID-19 no Brasil">
+    <link href='favicon.ico' rel='icon' type='image/x-icon' />
+    
+    
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/plots.css">
+    <script src="js/jquery-3.4.1.min.js"></script>
+    <script src="js/highcharts.js"></script>
+    <script src="js/modules/exporting.js"></script>
+    <script src="js/modules/data.js"></script>    
+    <script src="js/palette.js"></script>
+    <script src="js/estados.js"></script>
+    <script src="js/populacao.js"></script>
+    <script src="js/proc.js"></script>
+
+    <title>COVID-19 no Brasil</title>
+</head>
+
+<body> 
+
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+            <a id="forkme_banner" href="https://github.com/molx/molx.github.io/tree/master/covid-19">Ver no GitHub</a>
+            <h1 id="project_title">COVID-19 no Brasil</h1>
+        </header>
+    </div>    
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">     
+        <div id="loading" class="loading">
+            <div>
+                <img src="images/loading.gif"><br>
+                <span>Carregando...</span>
+            </div>
+        </div>
+        <div id="wall" class="wall"></div>
+        <section id="main_content" class="inner">
+            <ol>
+                <li><a href="#heading_graficos">Gráficos</a></li>
+                <li><a href="#heading_fontes">Fontes dos Dados</a></li>
+                <li><a href="#heading_outras">Outras Fontes</a></li>
+            </ol>
+            
+            <h3 id="heading_graficos">Brasil</h3>            
+            <div id="br_casos" class="plot plotNarrow plotShort"></div><div id="br_obitos" class="plot plotNarrow plotShort"></div>
+            <div id="br_novoscasos" class="plot plotNarrow plotShort"></div><div id="br_novosobitos" class="plot plotNarrow plotShort"></div>
+            <h3>Estados</h3>
+            <h4>Distribuição de casos e óbitos</h4>
+            <div id="estados_dist" class="plot plotWide plotShort"></div>
+            <div id="estados_dist_obitos" class="plot plotWide plotShort"></div>
+            <h4>Estados separadamente</h4><br>
+            <span>Selecione um estado: </span>
+            <select id="sel_estado"></select><br>
+            <div id="estado_casos" class="plot plotNarrow plotShort"></div><div id="estado_obitos" class="plot plotNarrow plotShort"></div>            
+            <h4>Comparações entre estados</h4><br>
+            <div id="estados_casos" class="plot plotNarrow plotTall"></div><div id="estados_obitos" class="plot plotNarrow plotTall"></div>
+            <h4>Comparações por regiões</h4><br>
+            <span>Selecione uma região:</span>
+            <select id="sel_regiao"></select><br>
+            <div id="regiao_casos" class="plot plotNarrow plotShort"></div><div id="regiao_obitos" class="plot plotNarrow plotShort"></div>
+            <div id="estados_comp" class="plot plotWide plotShort"></div>
+            
+            <!-- -->
+            <h3 id="heading_fontes">Fontes dos dados</h3>
+            <p>Os dados referentes ao Brasil são retirados do site do Ministério da Saúde:</p>
+            <p><a href="https://covid.saude.gov.br/">https://covid.saude.gov.br/</a></p>
+            <p>Os dados também podem ser obtidos nos boletins diários publicados na <a href="https://www.saude.gov.br/noticias/agencia-saude">Agência Saúde</a>.</p>
+
+            <p>Como o MS só disponibiliza os dados do último dia, os dados completos (séries temporais) podem ser obtidos aqui:</p>
+            <p><a href="data/estados.csv">http://www.alanmol.com.br/covid-19/data/estados.csv</a></p>
+
+            <p>Os dados referentes a outros países são retirados do projeto Our World in Data, da Universidade de Oxford:</p>
+            <p><a href="https://ourworldindata.org/coronavirus-source-data">https://ourworldindata.org/coronavirus-source-data</a></p>
+
+            <h3 id="heading_outras">Outras referências</h3>
+            <p>Diversos grupos estão compilando seus próprios dados e criando diferentes visualizações referente ao Coronavirus. Alguns destes são listados abaixo:</p>
+            <ul>
+                <li><a href="https://covid19br.github.io/index.html">Observatório COVID-19 BR</a></li>
+                <li><a href="https://paternogbc.github.io/covid19br/index.html">Pacote de R com os dados do Brasil (covid19br)</a></li>
+                <li><a href="https://liibre.github.io/coronabr/index.html">Pacote de R com os dados do Brasil e gráficos (coronabr)</a></li>
+                <li><a href="https://www.kaggle.com/unanimad/corona-virus-brazil">Repositório Kaggle com dados do Brasil por estado</a>
+                    <br/>
+                    <span style="font-size: small;">Os dados podem diferir um pouco dos apresentados aqui por diferenças nas referências (Secretarias Estaduais vs Ministério da Saúde)</span></li>
+            </ul>
+            <p>Sites internacionais com informações de todo o mundo:</p>
+            <ul>
+                <li><a href="https://www.who.int/emergencies/diseases/novel-coronavirus-2019/situation-reports">Situation Reports da Organização Mundial da Saúde</a></li>
+                <li><a href="https://ourworldindata.org/coronavirus">Our World in Data (University of Oxford)</a></li>
+                <li><a href="https://coronavirus.jhu.edu/map.html">Coronavirus COVID-19 Global Cases (Johns Hopkins University)</a></li>
+                <li><a href="https://www.worldometers.info/coronavirus/">Worldometer COVID-19 Pandemic</a></li>
+                <li><a href="https://www.coronatracker.com/ptbr/country/br/">CoronaTracker - Gráficos e Clipping</a></li>
+            </ul>
+        </section>
+    </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+        <footer class="inner">
+        </footer>
+    </div>
+
+    <script type="text/javascript">
+        var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+        document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+    </script>
+    <script type="text/javascript">
+        try {
+            var pageTracker = _gat._getTracker("UA-60942909-1");
+            pageTracker._trackPageview();
+        } catch (err) {}
+    </script>    
+</body>
+
+</html>

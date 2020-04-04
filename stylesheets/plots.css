@@ -1,0 +1,44 @@
+.plot {    
+    /*height: 300px;*/
+    display: inline-block;
+    margin-bottom: 10px;
+    /*overflow: visible !important;*/
+}
+
+.plotNarrow {
+    width: 50%;
+}
+
+.plotWide {
+    width: 100%;
+}
+
+.plotShort {
+    height: 300px;
+}
+
+.plotTall {
+    height: 400px;
+}
+
+.plotpair {
+    margin: 0 auto;
+}
+
+.highcharts-container { 
+    overflow: visible !important;
+}
+
+.plotButton rect {
+    width: 90px;
+}
+
+.plotButton text {
+    x: 50%;
+    y: 50%;
+    text-anchor: middle;
+}
+
+svg { 
+    overflow: visible;
+}
