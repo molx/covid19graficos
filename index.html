@@ -7,7 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
     <meta name="description" content="COVID-19 no Brasil">
     <link href='images/favicon.ico' rel='icon' type='image/x-icon' />
-    <meta property="og:image" content="images/ogimage.png" />
+    <meta property="og:image" content="http://covid19graficos.com.br/images/ogimage.png" />
     
     <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
     <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/plots.css">
@@ -17,7 +17,7 @@
     <script src="js/modules/data.js"></script>    
     <script src="js/palette.js"></script>
     <script src="js/papaparse.min.js"></script>
-    <script src="js/data.js"></script>    
+    <script src="js/data.js"></script>
     <script src="js/proc.min.js"></script>    
     
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-162813521-1"></script>
@@ -51,6 +51,15 @@
         </div>
         <div id="wall" class="wall"></div>
         <section id="main_content" class="inner">
+            <div id="tips">
+                Ferramentas para ver os gráficos:
+                <ul>
+                    <li>Passe o mouse sobre os pontos para ver os valores exatos.</li>
+                    <li>Clique e arraste no gráfico para aproximar na região.</li>
+                    <li>Utilize os botões para mudar o tipo de escala.</li>
+                    <li>Clique no botão do menu para ver em tela cheia e exportar.</li>
+                </ul>
+            </div>
             <ol>
                 <li><a href="#heading_graficos">Gráficos</a></li>
                 <li><a href="#heading_fontes">Fontes dos Dados</a></li>
@@ -74,9 +83,9 @@
             <span>Selecione uma região:</span>
             <select id="sel_regiao"></select><br>
             <div id="regiao_casos" class="plot plotNarrow plotShort"></div><div id="regiao_obitos" class="plot plotNarrow plotShort"></div>
-            <div id="estados_comp" class="plot plotWide plotShort"></div>
+            <div id="estados_comp" class="plot plotWide plotTall"></div>
             
-            <div id="eua" class="plot plotWide plotShort"></div>
+            <div id="world_comp" class="plot plotWide plotTall"></div>
             <!-- -->
             <h3 id="heading_fontes">Fontes dos dados</h3>
             <p>Os dados referentes ao Brasil são retirados do site do Ministério da Saúde:</p>

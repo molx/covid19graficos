@@ -484,3 +484,15 @@ select {
     border: none;
     box-shadow: none;
 }
+
+#tips {
+    float: right;
+    font-size: small;
+    border: 1px solid #666666;
+    border-radius: 5px;
+    padding: 4px 6px 4px 4px;
+}
+
+#tips ul {
+    margin-bottom: 0;
+}
