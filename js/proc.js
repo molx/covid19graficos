@@ -122,6 +122,9 @@ regioes["Brasil"] = nomesEstados;
 //Manually add first color to avoid the palette's red as the first and main color.
 var myColors = ["#2b547e"].concat(palette("mpn65", 26).map(c => "#" + c));
 
+//Fetching world data for comparison with other countries
+
+
 var highchartsOptions = Highcharts.setOptions({
       lang: {
             loading: "Aguarde...",
@@ -300,8 +303,51 @@ function createColumnChart(renderTo, tooltipHelp = null) {
             }
         }      
     });
+
 }
+
+var rawWorldData, worldData;
+var worldDataSource = "https://covid.ourworldindata.org/data/ecdc/full_data.csv";
+
+function parseWorldData() {
+    //Charts that use the World Data must be created in here since this function will only be called once the data has been fetched
+    worldData = Papa.parse(rawWorldData, {
+        header: true,
+        dynamicTyping: true
+    }).data;
+    
+    createLineChart("eua");
+    $("#eua").highcharts().addSeries({               
+        name: "EUA",
+        data: formatToChart(worldData.filter(function(obj) { return obj.location == "United States"}), "total_cases")[0].data     
+    }, false);
+    $("#eua").highcharts().update({        
+        yAxis: {
+            title: {
+                text: "Casos Confirmados"
+            }
+        },
+        title: {
+            text: "Casos Confirmados - EUA"
+        },
+        subtitle: {
+            text: "Fonte: Our World in Data"
+        }
+    });
+        
+    //Hide loading divs after all charts are loaded
+    $('#loading, #wall').hide();
+}
+
 document.addEventListener("DOMContentLoaded", function () {
+    
+    fetch(worldDataSource)
+      .then(function(response) {
+        response.text().then(function(text) {
+          rawWorldData = text;
+          parseWorldData()
+        });
+      });    
     
     nomesEstados.forEach(function(e) {
         $("#sel_estado").append(new Option(e, e));
@@ -833,6 +879,4 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         }            
     });
-    //Hide loading div after all charts are loaded
-    $('#loading, #wall').hide();
 });

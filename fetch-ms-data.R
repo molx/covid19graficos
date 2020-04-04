@@ -51,14 +51,12 @@ if (all(sort(last_ms_data$total_cases) == sort(last_saved_day$total_cases))) {
            SheetNames = c("Confirmados", "Mortes", "Populacao"))
   
   cat("Saving JS file...\n\n")
-  
-  writeLines(paste("var estados =",
-                   toJSON(newdata, pretty = FALSE)),
-             con = "js/estados.js", useBytes = TRUE)
+  popJSON = paste("var populacao =",
+                  toJSON(pop %>% pivot_wider(names_from = UF, values_from = População),
+                         pretty = FALSE))
+  dataJSON = paste("var estados =",
+                   toJSON(newdata, pretty = FALSE))
+  writeLines(paste(popJSON, dataJSON, sep = ";"),
+             con = "js/data.js", useBytes = TRUE)
   
 }
-
-writeLines(paste("var populacao =",
-                 toJSON(pop %>% pivot_wider(names_from = UF, values_from = População),
-                        pretty = FALSE)),
-           con = "js/populacao.js", useBytes = TRUE)

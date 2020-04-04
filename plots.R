@@ -43,6 +43,7 @@ get_full_data_style <- function(mincases, group = "País") {
 ################################
 # Ministério da saúde
 # http://plataforma.saude.gov.br/novocoronavirus/
+# https://covid.saude.gov.br/
 
 #Calculating new cases by the difference between day and day - 1
 calc_new <- function(x) {
