@@ -18,11 +18,11 @@
     <script src="js/jquery-3.4.1.min.js"></script>
     <script src="js/highcharts.js"></script>
     <script src="js/modules/exporting.js"></script>
-    <script src="js/modules/data.js"></script>    
+    <script src="js/modules/data.js"></script>
     <script src="js/palette.js"></script>
     <script src="js/papaparse.min.js"></script>
     <script src="js/data.js"></script>
-    <script src="js/proc.min.js"></script>    
+    <script src="js/proc.min.js"></script>
     
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-162813521-1"></script>
     <script>
@@ -78,6 +78,7 @@
             <h4>Distribuição de casos e óbitos</h4>
             <div id="estados_dist" class="plot plotWide plotShort"></div>
             <div id="estados_dist_obitos" class="plot plotWide plotShort"></div>
+            <div id="estados_CFR" class="plot plotNarrow plotShort"></div><br>
             <h4>Estados separadamente</h4><br>
             <span>Selecione um estado: </span>
             <select id="sel_estado"></select><br>
@@ -93,6 +94,7 @@
             <h3>Comparações com outros países</h3>
             <div id="world_comp" class="plot plotWide plotTall"></div>
             <div id="world_comp_obitos" class="plot plotWide plotTall"></div>
+            <div id="world_CFR" class="plot plotWide plotTall"></div>
             <!-- -->
             <h3 id="heading_fontes">Fontes dos dados</h3>
             <p>Os dados referentes ao Brasil são retirados do site do Ministério da Saúde:</p>
@@ -110,8 +112,7 @@
             <ul>
                 <li><a href="https://covid19br.github.io/index.html">Observatório COVID-19 BR</a></li>
                 <li><a href="http://covid19br.org/">Painel Coronavirus Brasil (Fiocruz Bahia/UFBA)</a></li>
-                <li><a href="https://www.coronavirusnobrasil.org/">Casos de COVID-19 no Brasil (Rice University)</a></li>
-                <li><a href="https://paternogbc.github.io/covid19br/index.html">Pacote de R com os dados do Brasil (covid19br)</a></li>
+                <li><a href="https://www.coronavirusnobrasil.org/">Casos de COVID-19 no Brasil (Rice University)</a></li>                
                 <li><a href="https://liibre.github.io/coronabr/index.html">Pacote de R com os dados do Brasil e gráficos (coronabr)</a></li>
                 <li><a href="https://www.kaggle.com/unanimad/corona-virus-brazil">Repositório Kaggle com dados do Brasil por estado</a></li>
                 
