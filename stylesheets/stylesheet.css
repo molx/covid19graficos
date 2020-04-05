@@ -309,7 +309,7 @@ Full-Width Styles
 }
 
 #header_wrap .inner {
-  padding: 50px 10px 30px 10px;
+  padding: 50px 10px 20px 10px;
 }
 
 #project_title {
@@ -495,4 +495,27 @@ select {
 
 #tips ul {
     margin-bottom: 0;
+}
+
+#social {
+    float: right;
+}
+#social a, #social a:hover {
+    display: table;
+    text-decoration: none;
+}
+
+#social img {
+    display: table-cell;
+    height: 16px;
+    width: 16px;
+    box-shadow: none;
+    border: none;
+    padding-top: 0;
+}
+
+#social span {
+    display: table-cell;
+    color: #ddd;
+    vertical-align: middle
 }
