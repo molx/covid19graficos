@@ -204,13 +204,13 @@ brasil_log_plot + theme_light() + #datastyle + # ablines +
            hjust = -0.05) +
   geom_vline(xintercept = 9, linetype = "6a") + 
   annotate("text", x = 9, y = 2, label = "Medidas de isolamento\n+7 dias (SP)",
-           hjust = -0.05) +
-  geom_vline(xintercept = 10, linetype = "6a") + 
-  annotate("text", x = 10, y = 2.3, label = "Pronunciamento Bolsonaro",
-           hjust = -0.05) +
-  geom_vline(xintercept = 17, linetype = "6a") + 
-  annotate("text", x = 17, y = 2, label = "Pronunciamento Bolsonaro\n+7 dias",
-           hjust = -0.05) 
+           hjust = -0.05)
+  # geom_vline(xintercept = 10, linetype = "6a") +
+  # annotate("text", x = 10, y = 2.3, label = "Pronunciamento Bolsonaro",
+  #          hjust = -0.05) 
+  # geom_vline(xintercept = 17, linetype = "6a") + 
+  # annotate("text", x = 17, y = 2, label = "Pronunciamento Bolsonaro\n+7 dias",
+  #          hjust = -0.05) 
 
 growth_rate <- function(x) {
   rate <- (x - lag(x)) / lag(x)
