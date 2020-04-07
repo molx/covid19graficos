@@ -142,7 +142,7 @@ brasil_log_plot + theme_light() + #datastyle + # ablines +
   scale_x_continuous(limits = c(0, nrow(brasil_log_data) + 2), breaks = seq_along(brasil_log_data$time), 
                      minor_breaks = NULL,
                      labels = format(brasil_log_data$date, format = "%d/%m")) +
-  scale_y_continuous(limits = c(NA, 4), breaks = br_log_brks, labels = pot10,
+  scale_y_continuous(limits = c(NA, 5), breaks = br_log_brks, labels = pot10,
                      minor_breaks = NULL) +
   labs(x = "Data", y = "Casos Confirmados (log)", linetype = "Dias para\ndobrar")
 

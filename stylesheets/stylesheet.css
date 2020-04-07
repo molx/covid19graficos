@@ -449,11 +449,12 @@ Small Device Styles
 
 select {
     font-size: 1.1em;
-    border-radius: 6px;
-    border-color: #000;
+    /* border-radius: 6px; */
+    /* border-color: #000; */
     margin-bottom: 0.3em;
     font-family: 'Myriad Pro', Calibri, Helvetica, Arial, sans-serif;
     height: 1.4em;
+    border: none;
 }
 
 .wall {
@@ -525,7 +526,7 @@ select {
 .data_summary {
     display: flex;
     justify-content: space-between;
-    column-gap: 20px;
+    /*column-gap: 20px;*/
 }
 
 .data_summary div {
@@ -533,13 +534,19 @@ select {
     border-radius: 10px;
     padding: 4px 0 0 0;
     margin: 0 0 10px 0;
-    width: 32.5%;
+    width: calc(25% - 10px);
     background-color: #fff;
-    font-size: 1.6em;
     text-align: center;
     box-shadow: 0 5px 5px 0 rgba(0, 0, 0, 0.2);
 }
 
 .data_value {
     font-weight: bold;
+    font-size: 1.6em;
+}
+
+.data_type {
+    font-size: 0.7em;
+    display: block;
+    line-height: 0.8em;
 }

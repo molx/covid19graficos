@@ -78,7 +78,12 @@
             <h3 id="heading_graficos">Brasil</h3>
             <div class="data_summary">
                 <div>
-                    <span class="data_type">Casos:</span>
+                    <span class="data_type">Última atualização:</span>
+                    <span id="data_br_dia" class="data_value"></span>
+                    
+                </div>
+                <div>
+                    <span class="data_type">Casos confirmados:</span>
                     <span id="data_br_casos" class="data_value"></span>
                 </div>
                 <div>
@@ -114,9 +119,13 @@
             </div>
             
             <h4>Estados separadamente</h4><br>
-            <span>Selecione um estado: </span>            
-            <select id="sel_estado"></select><br>
+            <!--<span>Selecione um estado: </span>             -->
+            
             <div class="data_summary">
+                <div>
+                    <span class="data_type">Selecione um estado:</span>
+                    <span id="" class=""><select id="sel_estado" style="margin: 0.3em 0 0 0;"></select><br></span>
+                </div>
                 <div>
                     <span class="data_type">Casos:</span>
                     <span id="data_estado_casos" class="data_value"></span>
@@ -146,8 +155,13 @@
             </div>
             
             <h4>Comparações por regiões</h4><br>
-            <span>Selecione uma região:</span>
-            <select id="sel_regiao"></select><br>
+            <div class="data_summary">
+                <div>
+                    <span class="data_type">Selecione uma região:</span>
+                    <span id="" class=""><select id="sel_regiao" style="margin: 0.3em 0 0 0;"></select><br></span>
+                </div>
+            </div>
+            <!--<span>Selecione uma região:</span>-->            
             <div class="plotLine">
                 <div id="regiao_casos" class="plot plotNarrow plotShort"></div><div id="regiao_obitos" class="plot plotNarrow plotShort"></div>
             </div>
@@ -162,14 +176,14 @@
             
             <!-- -->
             <h3 id="heading_fontes">Fontes dos dados</h3>
-            <p>Os dados referentes ao Brasil são retirados do site do Ministério da Saúde:</p>
+            <p>Os dados referentes ao Brasil (exceto nas comparações com outros países) são retirados do site do Ministério da Saúde:</p>
             <p><a href="https://covid.saude.gov.br/">https://covid.saude.gov.br/</a></p>
             <p>Os dados também podem ser obtidos nos boletins diários publicados na <a href="https://www.saude.gov.br/noticias/agencia-saude">Agência Saúde</a>.</p>
 
             <p>O MS passou a disponibilizar os dados completos com as séries temporais, mas caso deseje você pode baixar os dados utilizados neste site aqui:</p>
             <p><a href="data/estados.csv">http://covid19graficos.com.br/data/estados.csv</a></p>
 
-            <p>Os dados referentes a outros países são retirados do projeto Our World in Data, da Universidade de Oxford:</p>
+            <p>Os dados referentes a outros países (incluindo o Brasil, nas comparações) são retirados do projeto Our World in Data, da Universidade de Oxford:</p>
             <p><a href="https://ourworldindata.org/coronavirus-source-data">https://ourworldindata.org/coronavirus-source-data</a></p>
 
             <h3 id="heading_outras">Outras referências</h3>
