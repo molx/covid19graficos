@@ -13,17 +13,21 @@
     <meta property="og:locale" content="pt_BR"/>
     <meta property="og:type" content="website" />
     
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css" rel="stylesheet" />
     <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
     <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/plots.css">
     <script src="js/jquery-3.4.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.js"></script>
     <script src="js/highcharts.js"></script>
     <script src="js/modules/exporting.js"></script>
     <script src="js/modules/data.js"></script>
     <script src="js/palette.js"></script>
     <script src="js/papaparse.min.js"></script>
     <script src="js/data.js"></script>
+    <script src="js/worldTrad.js"></script>
     <script src="js/proc.min.js"></script>
     
+
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-162813521-1"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
@@ -124,7 +128,7 @@
             <div class="data_summary">
                 <div>
                     <span class="data_type">Selecione um estado:</span>
-                    <span id="" class=""><select id="sel_estado" style="margin: 0.3em 0 0 0;"></select><br></span>
+                    <select id="sel_estado" style="margin: 0.3em 0 0 0;" class="js-example-basi" name="sel_estado"></select>
                 </div>
                 <div>
                     <span class="data_type">Casos:</span>
@@ -168,11 +172,20 @@
             
             <h3>Comparações com outros países</h3>
             
-            <div id="world_comp" class="plot plotWide plotTall"></div>
-            <div id="world_comp_obitos" class="plot plotWide plotTall"></div>
-            <div id="world_CFR" class="plot plotWide plotTall"></div>
-            <div id="world_CFR_comp" class="plot plotWide plotTall"></div>
+            <label for="sel_country">Selecione os países que deseja comparar:
+                <select id="sel_country" class="js-example-basic-multiple" name="countries" multiple="multiple">
+                </select>
+            </label><br/>
             
+            <div class="plotLine">
+                <div id="world_comp" class="plot plotNarrow plotTall"></div>
+                <div id="world_comp_obitos" class="plot plotNarrow plotTall"></div>
+            </div>
+            
+            <div class="plotLine">
+                <div id="world_CFR" class="plot plotNarrow plotTall"></div>
+                <div id="world_CFR_comp" class="plot plotNarrow plotTall"></div>
+            </div>
             
             <!-- -->
             <h3 id="heading_fontes">Fontes dos dados</h3>
