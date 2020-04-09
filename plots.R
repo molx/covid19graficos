@@ -148,7 +148,7 @@ brasil_log_plot + theme_light() + #datastyle + # ablines +
 
 next_day <- nrow(brasil_log_data) + 1
 est_ref_interval <- 7
-est_pred_interval <- 5
+est_pred_interval <- 7
 estimates <- data.frame(x = next_day:(next_day + est_ref_interval - 1),
   y = predict(lm(total_cases ~ time, data = tail(brasil_log_data, est_ref_interval),
                  weights = sqrt(1:est_ref_interval)), 
