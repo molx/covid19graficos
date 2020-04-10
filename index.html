@@ -19,6 +19,7 @@
     <script src="js/jquery-3.4.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.js"></script>
     <script src="js/highcharts.js"></script>
+    <script src="js/highcharts-more.js"></script>
     <script src="js/modules/exporting.js"></script>
     <script src="js/modules/data.js"></script>
     <script src="js/palette.js"></script>
@@ -107,7 +108,7 @@
                 <div id="br_novoscasos" class="plot plotNarrow plotShort"></div><div id="br_novosobitos" class="plot plotNarrow plotShort"></div>
             </div>
             <div class="plotLine">
-                <div id="br_CFR" class="plot plotNarrow plotShort"></div>
+                <div id="br_CFR" class="plot plotNarrow plotShort"></div><div id="br_DBL" class="plot plotNarrow plotShort"></div>
             </div>
             
             <h3>Estados</h3>
@@ -189,15 +190,9 @@
             
             <!-- -->
             <h3 id="heading_fontes">Fontes dos dados</h3>
-            <p>Os dados referentes ao Brasil (exceto nas comparações com outros países) são retirados do site do Ministério da Saúde:</p>
-            <p><a href="https://covid.saude.gov.br/">https://covid.saude.gov.br/</a></p>
-            <p>Os dados também podem ser obtidos nos boletins diários publicados na <a href="https://www.saude.gov.br/noticias/agencia-saude">Agência Saúde</a>.</p>
-
-            <p>O MS passou a disponibilizar os dados completos com as séries temporais, mas caso deseje você pode baixar os dados utilizados neste site aqui:</p>
-            <p><a href="data/estados.csv">http://covid19graficos.com.br/data/estados.csv</a></p>
-
-            <p>Os dados referentes a outros países (incluindo o Brasil, nas comparações) são retirados do projeto Our World in Data, da Universidade de Oxford:</p>
-            <p><a href="https://ourworldindata.org/coronavirus-source-data">https://ourworldindata.org/coronavirus-source-data</a></p>
+            <p>A fonte dos dados de cara gráfico estão refenciadas no canto inferio esquerdo. No geral, os dados referentes ao Brasil (exceto nas comparações com outros países) são retirados do <a href="https://covid.saude.gov.br/">Painel Coronavírus</a> do Ministério da Saúde. Já os dados referentes a outros países (incluindo o Brasil, nas comparações e no cálculo do tempo de duplicação) são retirados do projeto <a href="https://ourworldindata.org/coronavirus-source-data">Our World in Data</a>, da Universidade de Oxford. É importante destacar que os dados do Our World in Data referentes ao Brasil tem um dia de "atraso" em relação aos dados oficiais, em virtude do horário de sincronização das plataformas e do fuso-horário utilizado como referência. Por este motivo, dados das duas fontes não são utilizados nos mesmos gráficos.</p>
+            
+            <p>Normalmente, os dados do Brasil também podem ser obtidos nos boletins diários publicados na <a href="https://www.saude.gov.br/noticias/agencia-saude">Agência Saúde</a>.  O MS também passou a disponibilizar os dados completos com as séries temporais, mas a planilha disponiblizada não possui padrão para formato dos dados e nome das colunas, o que dificulta seu uso automatizado. Caso deseje, você pode baixar os dados no mesmo formato do Our World In data utilizados neste site <a href="data/estados.csv">aqui</a>.</p>
 
             <h3 id="heading_outras">Outras referências</h3>
             <p>Diversos grupos estão compilando seus próprios dados e criando diferentes visualizações referente ao Coronavirus. Alguns destes são listados abaixo:</p>
