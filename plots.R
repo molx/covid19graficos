@@ -243,6 +243,15 @@ doubling_time_lm <- function(x, days = 5, intervals = FALSE) {
   out
 }
 
+dbl_time_br <- brasil %>% filter(location == "Brasil", total_deaths >= 20) %>%
+  group_by(location) %>% filter(n() > 10) %>%
+  mutate(dbl_time = round(doubling_time_lm(total_deaths, 5), 2),
+         dbl_time_lwr = round(doubling_time_lm(total_deaths, 5, TRUE)$lwr, 2),
+         dbl_time_upr = round(doubling_time_lm(total_deaths, 5, TRUE)$upr, 2)) %>%
+  filter(dbl_time > 0) %>% select(-new_cases, -new_deaths, -total_cases, -total_deaths)
+
+write_excel_csv(dbl_time_br, "data/dbl_time_br.csv")
+
 
 dobling_time_lookup <- function(cases) {
   # Dobling time calculated by looking up the nearest day when # of cases was half of that day,
@@ -415,13 +424,6 @@ dev.off()
 full_data <- read_csv("https://covid.ourworldindata.org/data/ecdc/full_data.csv") %>% 
   mutate(date = as.Date(date))
 
-full_data %>% filter(location == "Brazil") %>% tail
-
-full_data <- full_join(full_data, filter(brasil, location == "Brasil"))
-
-compare <- c("Brasil", "Italy", "United States", "Spain", "France",
-             "South Korea", "Germany", "United Kingdom")
-
 dbl_time <- full_data %>% filter(total_deaths >= 20) %>%
   group_by(location) %>% filter(n() > 10) %>%
   mutate(dbl_time = round(doubling_time_lm(total_deaths, 5), 2),
@@ -430,6 +432,15 @@ dbl_time <- full_data %>% filter(total_deaths >= 20) %>%
   filter(dbl_time > 0) %>% select(-new_cases, -new_deaths, -total_cases, -total_deaths)
 
 write_excel_csv(dbl_time, "data/dbl_time.csv")
+
+
+full_data %>% filter(location == "Brazil") %>% tail
+
+full_data <- full_join(full_data, filter(brasil, location == "Brasil"))
+
+compare <- c("Brasil", "Italy", "United States", "Spain", "France",
+             "South Korea", "Germany", "United Kingdom")
+
 
 maxday <- 25
 mincases <- 100

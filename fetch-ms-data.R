@@ -51,6 +51,7 @@ if (all(sort(last_ms_data$total_cases) == sort(last_saved_day$total_cases))) {
   pop <- read_excel("data/Brasil.xlsx", sheet = "Populacao")
   
   dbl <- read_csv("data/dbl_time.csv")
+  dbl_br <- read_csv("data/dbl_time_br.csv")
   
   cat("Saving Excel file...\n\n")
   WriteXLS(x = list(exceldata_cases, exceldata_deaths, pop),
@@ -63,9 +64,11 @@ if (all(sort(last_ms_data$total_cases) == sort(last_saved_day$total_cases))) {
                          pretty = FALSE))
   dblJSON = paste("var dbl_time =",
                   toJSON(dbl, pretty = FALSE))
+  dblJSONbr = paste("var dbl_time_br =",
+                  toJSON(dbl_br, pretty = FALSE))
   dataJSON = paste("var estados =",
                    toJSON(newdata, pretty = FALSE))
-  writeLines(paste(popJSON, dblJSON, dataJSON, sep = ";"),
+  writeLines(paste(popJSON, dblJSON, dblJSONbr, dataJSON, sep = ";"),
              con = "js/data.js", useBytes = TRUE)
   
 }

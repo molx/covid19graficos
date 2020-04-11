@@ -26,7 +26,7 @@
     <script src="js/papaparse.min.js"></script>
     <script src="js/data.js"></script>
     <script src="js/worldTrad.js"></script>
-    <script src="js/proc.min.js"></script>
+    <script src="js/proc.js"></script>
     
 
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-162813521-1"></script>
@@ -110,6 +110,7 @@
             <div class="plotLine">
                 <div id="br_CFR" class="plot plotNarrow plotShort"></div><div id="br_DBL" class="plot plotNarrow plotShort"></div>
             </div>
+            <p><sup>*</sup><small>O <b>tempo de duplicação</b> indica quantos dias o número de casos ou óbitos demora para dobrar. Como a quantidade de novos casos e óbitos não cresce numa taxa constante, o resultado deste cálculo depende do método utilizado. Neste gráfico, o tempo de duplicação é calculado por uma regressão linear do número de óbitos, em escala log, dos últimos 5 dias. Um tempo de duplicação maior indica que os casos estão crescendo em menor velocidade, o que é desejável.</small></p>
             
             <h3>Estados</h3>
             <h4>Distribuição de casos e óbitos</h4>
@@ -188,9 +189,13 @@
                 <div id="world_CFR_comp" class="plot plotNarrow plotTall"></div>
             </div>
             
+            <div class="plotLine">
+                <div id="world_DBL" class="plot plotWide plotTall"></div><br>
+            </div>
+            
             <!-- -->
             <h3 id="heading_fontes">Fontes dos dados</h3>
-            <p>A fonte dos dados de cara gráfico estão refenciadas no canto inferio esquerdo. No geral, os dados referentes ao Brasil (exceto nas comparações com outros países) são retirados do <a href="https://covid.saude.gov.br/">Painel Coronavírus</a> do Ministério da Saúde. Já os dados referentes a outros países (incluindo o Brasil, nas comparações e no cálculo do tempo de duplicação) são retirados do projeto <a href="https://ourworldindata.org/coronavirus-source-data">Our World in Data</a>, da Universidade de Oxford. É importante destacar que os dados do Our World in Data referentes ao Brasil tem um dia de "atraso" em relação aos dados oficiais, em virtude do horário de sincronização das plataformas e do fuso-horário utilizado como referência. Por este motivo, dados das duas fontes não são utilizados nos mesmos gráficos.</p>
+            <p>A fonte dos dados de cara gráfico estão refenciadas no canto inferio esquerdo. No geral, os dados referentes ao Brasil (exceto nas comparações com outros países) são retirados do <a href="https://covid.saude.gov.br/">Painel Coronavírus</a> do Ministério da Saúde. Já os dados referentes a outros países (incluindo o Brasil quando comparado com outros países) são retirados do projeto <a href="https://ourworldindata.org/coronavirus-source-data">Our World in Data</a>, da Universidade de Oxford. É importante destacar que os dados do Our World in Data referentes ao Brasil tem um dia de "atraso" em relação aos dados oficiais, em virtude do horário de sincronização das plataformas e do fuso-horário utilizado como referência. Por este motivo, dados das duas fontes não são utilizados nos mesmos gráficos.</p>
             
             <p>Normalmente, os dados do Brasil também podem ser obtidos nos boletins diários publicados na <a href="https://www.saude.gov.br/noticias/agencia-saude">Agência Saúde</a>.  O MS também passou a disponibilizar os dados completos com as séries temporais, mas a planilha disponiblizada não possui padrão para formato dos dados e nome das colunas, o que dificulta seu uso automatizado. Caso deseje, você pode baixar os dados no mesmo formato do Our World In data utilizados neste site <a href="data/estados.csv">aqui</a>.</p>
 
