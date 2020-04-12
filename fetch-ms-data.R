@@ -27,11 +27,27 @@ last_ms_data <- parse_json(content(res, "text"), simplifyVector = TRUE)[[1]][col
 
 olddata <- read_csv("data/estados.csv")
 
+pop <- read_excel("data/Brasil.xlsx", sheet = "Populacao")
+
+dbl <- read_csv("data/dbl_time.csv")
+dbl_br <- read_csv("data/dbl_time_br.csv")
+
+popJSON = paste("var populacao =",
+                toJSON(pop %>% pivot_wider(names_from = UF, values_from = População),
+                       pretty = FALSE))
+dblJSON = paste("var dbl_time =",
+                toJSON(dbl, pretty = FALSE))
+dblJSONbr = paste("var dbl_time_br =",
+                  toJSON(dbl_br, pretty = FALSE))
+
+
 #Last day added to old data
 last_saved_day <- filter(olddata, date == max(olddata$date))
 
 if (all(sort(last_ms_data$total_cases) == sort(last_saved_day$total_cases))) {
   cat("\nData already up to date.\n\n") 
+                   
+  
 } else {
   cat("\nUpdating data...\n\n")
   newdata <- full_join(olddata, last_ms_data) %>% group_by(location) %>%
@@ -48,10 +64,7 @@ if (all(sort(last_ms_data$total_cases) == sort(last_saved_day$total_cases))) {
     pivot_wider(names_from = location, values_from = total_deaths) %>% 
     rename(Data = date)
   
-  pop <- read_excel("data/Brasil.xlsx", sheet = "Populacao")
-  
-  dbl <- read_csv("data/dbl_time.csv")
-  dbl_br <- read_csv("data/dbl_time_br.csv")
+ 
   
   cat("Saving Excel file...\n\n")
   WriteXLS(x = list(exceldata_cases, exceldata_deaths, pop),
@@ -59,16 +72,10 @@ if (all(sort(last_ms_data$total_cases) == sort(last_saved_day$total_cases))) {
            SheetNames = c("Confirmados", "Mortes", "Populacao"))
   
   cat("Saving JS file...\n\n")
-  popJSON = paste("var populacao =",
-                  toJSON(pop %>% pivot_wider(names_from = UF, values_from = População),
-                         pretty = FALSE))
-  dblJSON = paste("var dbl_time =",
-                  toJSON(dbl, pretty = FALSE))
-  dblJSONbr = paste("var dbl_time_br =",
-                  toJSON(dbl_br, pretty = FALSE))
+ 
   dataJSON = paste("var estados =",
                    toJSON(newdata, pretty = FALSE))
-  writeLines(paste(popJSON, dblJSON, dblJSONbr, dataJSON, sep = ";"),
-             con = "js/data.js", useBytes = TRUE)
-  
 }
+
+writeLines(paste(popJSON, dblJSON, dblJSONbr, dataJSON, sep = ";"),
+           con = "js/data.js", useBytes = TRUE)
