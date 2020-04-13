@@ -307,7 +307,7 @@ for (uf in ufs) {
     annotate("text", x = ts$date[1], y = max(ts$new_cases) * 1.01, 
              label = "Fonte: Ministério da Saúde", hjust = 0, vjust = 0) +
     annotate("text", x = max(ts$date), y = last(ts$new_cases), 
-             label = max(ts$new_cases), hjust = 1.1)
+             label = last(ts$new_cases), hjust = 1.1)
   p2
   
   ggsave(paste0("data/", uf, "-Total.png"), plot = p1,
@@ -573,7 +573,7 @@ death_comp_plot <- death_comp %>%
   geom_hline(yintercept = avg_death, linetype = "dashed") +
   geom_text(aes(label = paste0(round(death_ratio * 100, 2), "%")) , position = position_dodge(width = 0.9), 
             vjust = -0.2, size = 3) +
-  scale_y_continuous(breaks = seq(0, 0.1, 0.025), labels = paste0(seq(0, 10, 2.5), "%")) +
+  scale_y_continuous(breaks = seq(0, 0.2, 0.025), labels = paste0(seq(0, 20, 2.5), "%")) +
   theme_light() + labs(x = "País", y = "Letalidade (CFR)") + ggtitle("Letalidade") +
   theme(axis.text.x = element_text(angle = 45, hjust = 1),
         plot.title = element_text(hjust = 0.5),
@@ -581,7 +581,7 @@ death_comp_plot <- death_comp %>%
   annotate("text", x = nrow(death_comp) + 0.5, y = avg_death,
            label = paste("Média (n >= 20):", avg_death * 100, "%"), 
            hjust = 1, vjust = -0.25) +
-  annotate("text", x = nrow(death_comp) + 0.5, y = 0.09, 
+  annotate("text", x = nrow(death_comp) + 0.5, y = max(death_comp$death_ratio), 
            label = "Fontes: https://ourworldindata.org/coronavirus\nMinistério da Saúde", 
            hjust = 1, vjust = 1) 
 
