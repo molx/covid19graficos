@@ -46,7 +46,9 @@ last_saved_day <- filter(olddata, date == max(olddata$date))
 
 if (all(sort(last_ms_data$total_cases) == sort(last_saved_day$total_cases))) {
   cat("\nData already up to date.\n\n") 
-                   
+  
+  dataJSON = paste("var estados =",
+                   toJSON(olddata, pretty = FALSE))
   
 } else {
   cat("\nUpdating data...\n\n")

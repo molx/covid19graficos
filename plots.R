@@ -135,7 +135,7 @@ ablines <- lapply(1:7, function(dbl_time) {
 #   geom_abline(linetype = i, slope = slopes[i], intercept = intcpt)
 # })
 
-br_log_brks <- unlist(lapply(1:5, function(i) log10(c(1*10^i, 2*10^i, 5*10^i))))
+br_log_brks <- unlist(lapply(0:5, function(i) log10(c(1*10^i, 2*10^i, 5*10^i))))
 
 brasil_log_plot + theme_light() + #datastyle + # ablines + 
   theme(axis.text.x = element_text(angle = 45, hjust = 1), plot.title = element_text(hjust = 0.5)) +
@@ -196,18 +196,33 @@ brasil_log_plot + theme_light() + #datastyle + # ablines +
   coord_cartesian(ylim = c(0, 4)) +
   labs(x = "Data", y = "Óbitos (log)") +
   ggtitle("Comparação da taxa de crescimento em função das medidas de isolamento") +
-  geom_smooth(data = tail(brasil_log_data, nrow(brasil_log_data) - 8), method = "lm",
-              fullrange = TRUE, level = 0.95, formula = y ~ x, size = 0.5, linetype = "f4") +
-  geom_smooth(data = brasil_log_data[5:9,], method = "lm",
-              fullrange = TRUE, level = 0.95, formula = y ~ x, size = 0.5, linetype = "f4") +
-  geom_smooth(data = tail(brasil_log_data, 7), method = "lm",
-              fullrange = TRUE, level = 0.95, formula = y ~ x, size = 0.5, linetype = "f4") +
-  geom_point(data = brasil_log_data, aes(x = time, y = total_deaths)) +
+  # geom_smooth(data = tail(brasil_log_data, nrow(brasil_log_data) - 8), method = "lm",
+  #             fullrange = TRUE, level = 0.95, formula = y ~ x, size = 0.5, linetype = "f4") +
   geom_vline(xintercept = 2, linetype = "6a") + 
-  annotate("text", x = 2, y = 2, label = "Início das medidas\nde isolamento (SP)",
-           hjust = -0.05) +
+  geom_smooth(data = brasil_log_data[5:9,], method = "lm", se = FALSE,
+              fullrange = TRUE, level = 0.95, formula = y ~ x, size = 0.5, linetype = "f4") +
   geom_vline(xintercept = 9, linetype = "6a") + 
-  annotate("text", x = 9, y = 2, label = "Medidas de isolamento\n+7 dias (SP)",
+  geom_smooth(data = brasil_log_data[10:16,], method = "lm", se = FALSE,
+              fullrange = TRUE, level = 0.95, formula = y ~ x, size = 0.5, linetype = "f4") +
+  geom_vline(xintercept = 16, linetype = "6a") + 
+  geom_smooth(data = brasil_log_data[17:23,], method = "lm", se = FALSE,
+              fullrange = TRUE, level = 0.95, formula = y ~ x, size = 0.5, linetype = "f4") +
+  geom_vline(xintercept = 23, linetype = "6a") + 
+  geom_smooth(data = brasil_log_data[24:30,], method = "lm", se = FALSE,
+              fullrange = TRUE, level = 0.95, formula = y ~ x, size = 0.5, linetype = "f4") +
+  geom_vline(xintercept = 30, linetype = "6a") + 
+  # geom_smooth(data = tail(brasil_log_data, 7), method = "lm",
+  #             fullrange = TRUE, level = 0.95, formula = y ~ x, size = 0.5, linetype = "f4") +
+  geom_point(data = brasil_log_data, aes(x = time, y = total_deaths)) +
+  annotate("text", x = 2, y = 3, label = "Início das medidas\nde isolamento (SP)",
+           hjust = -0.05) +
+  annotate("text", x = 9, y = 1, label = "Medidas de isolamento\n+7 dias (SP)",
+           hjust = -0.05) +
+  annotate("text", x = 16, y = 1, label = "+14 dias",
+          hjust = -0.05) +
+  annotate("text", x = 23, y = 1, label = "+21 dias",
+           hjust = -0.05) +
+  annotate("text", x = 30, y = 1, label = "+28 dias",
            hjust = -0.05)
   # geom_vline(xintercept = 10, linetype = "6a") +
   # annotate("text", x = 10, y = 2.3, label = "Pronunciamento Bolsonaro",
@@ -243,7 +258,7 @@ doubling_time_lm <- function(x, days = 5, intervals = FALSE) {
   out
 }
 
-dbl_time_br <- brasil %>% filter(location == "Brasil", total_deaths >= 20) %>%
+dbl_time_br <- brasil %>% filter(total_deaths >= 20) %>%
   group_by(location) %>% filter(n() > 10) %>%
   mutate(dbl_time = round(doubling_time_lm(total_deaths, 5), 2),
          dbl_time_lwr = round(doubling_time_lm(total_deaths, 5, TRUE)$lwr, 2),
