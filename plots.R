@@ -364,6 +364,7 @@ dbl_time <- full_data %>% filter(total_deaths >= 20) %>%
 
 write_excel_csv(dbl_time, "data/dbl_time.csv")
 
+source("fetch-ms-data.R", encoding= "utf8")
 
 full_data %>% filter(location == "Brazil") %>% tail
 
@@ -371,6 +372,7 @@ full_data <- full_join(full_data, filter(brasil, location == "Brasil"))
 
 compare <- c("Brasil", "Italy", "United States", "Spain", "France",
              "South Korea", "Germany", "United Kingdom")
+
 
 
 maxday <- 25
@@ -592,7 +594,7 @@ anim <- animate(p, duration = 30, fps = 25, end_pause = 100,
                 width = 787, height = 500)
 anim_save("data/EstadosAnim.gif")
 
-cfrdeaths <- full_data %>% group_by(location) %>% filter(total_deaths >= 1000, row_number() == n(),
+cfrdeaths <- full_data %>% group_by(location) %>% filter(total_deaths >= 100, row_number() == n(),
                                             !location %in% c("World", "Brasil")) %>%
   mutate(cfr = total_deaths/total_cases, total_deaths_log = log10(total_deaths))
 
@@ -607,4 +609,3 @@ cfrdeaths %>%
   geom_smooth(method = "lm")
 
 cor(cfrdeaths$total_deaths_log, cfrdeaths$cfr)
-log10    
