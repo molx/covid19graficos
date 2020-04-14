@@ -5,6 +5,7 @@ library(grid)
 library(ggrepel)
 library(gganimate)
 
+source("funcs.R")
 
 # source <- "Fonte: 2019 Novel Coronavirus COVID-19 (2019-nCoV)\nData Repository by Johns Hopkins CSSE\nhttps://github.com/CSSEGISandData/COVID-19"
 
@@ -19,65 +20,6 @@ library(gganimate)
 #   pivot_longer(everything(), names_to = "Date", values_to = "Cases") %>%
 #   mutate(Date = as.Date(Date, format = "%m/%d/%y"), New = Cases - lag(Cases)) %>%
 #   tail(-29)
-
-datastyle <- list(theme_light(), geom_line(size = 1), geom_point(),
-                  scale_x_date(date_breaks = "2 days", date_minor_breaks = "1 day",
-                               date_labels = "%d/%m"),
-                  theme(axis.text.x = element_text(angle = 45, hjust = 1),
-                        plot.title = element_text(hjust = 0.5),
-                        plot.margin = margin(0.2, 0.5, 0.2, 0.5, "cm")),
-                  labs(x = "Data", y = "Número de Casos"))
-
-
-get_full_data_style <- function(mindeaths, group = "País") {
-  list(theme_light(),
-       geom_line(aes(group = location, colour = location), size = 1),
-       geom_label_repel(aes(label = label), nudge_x = 1, na.rm = TRUE),
-       labs(x = "Dia", y = "Número de Casos", colour = group),
-       ggtitle(paste("Óbitos após o", mindeaths, "º óbito")),
-       theme(plot.title = element_text(hjust = 0.5),
-             plot.margin = margin(0.2, 0.5, 0.2, 0.5, "cm")),
-       scale_x_continuous(breaks = 1:100, minor_breaks = 1:100))
-}
-
-################################
-# Ministério da saúde
-# http://plataforma.saude.gov.br/novocoronavirus/
-# https://covid.saude.gov.br/
-
-#Calculating new cases by the difference between day and day - 1
-calc_new <- function(x) {
-  new <- x - lag(x)
-  new[is.na(new)] <- 0
-  new
-}
-
-na_to_zero <- function(x) {
-  ifelse(is.na(x), 0, x)
-}
-
-# Function to calculate theoretical exponetial growth
-# factor = the amount which grows
-# time = the time it takes to grow by factor
-# x = the time period to simulate
-# e.g.: factor = 2, time = 3, means doubles every 3 units of time
-growth_line <- function(factor, time, duration) {
-  x <- duration
-  y <- factor ^ (x / time)
-  data.frame(x = x, y = y)
-}
-
-# Calculate 10 power to use in log scale labels
-pot10 <- function(x) {10 ^ x}
-
-# Use pot10 to create strings formatted for the axis label
-pot10l <- function(x) {format(pot10(x), scientific = FALSE, big.mark = ",")}
-
-growth_line_log <- function(factor, time, duration) {
-  x <- duration
-  y <- duration * log10(factor) / time
-  data.frame(x = x, y = y)
-}
 
 casos <- read_excel("data/Brasil.xlsx", sheet = "Confirmados") %>%
   mutate(Data = as.Date(Data)) %>% rename(date = Data) %>%
@@ -231,32 +173,6 @@ brasil_log_plot + theme_light() + #datastyle + # ablines +
   # annotate("text", x = 17, y = 2, label = "Pronunciamento Bolsonaro\n+7 dias",
   #          hjust = -0.05) 
 
-growth_rate <- function(x) {
-  rate <- (x - lag(x)) / lag(x)
-  rate[is.na(rate)] <- 0
-  rate
-}
-
-doubling_time <- function(x) {
-  log(2) / log(1 + growth_rate(x))
-}
-
-doubling_time_lm <- function(x, days = 5, intervals = FALSE) {
-  d <- sapply((days):length(x), function(i) {
-    start <- i - days + 1
-    df <- data.frame(y = log10(x[start:i]), x = 1:days)
-    fit <- lm(y ~ x, data = df, weights = sqrt(seq_along(x)))
-    intervals <- log10(2)/confint(fit, 2)
-    c(intervals[2], log10(2)/fit$coef[2], intervals[1])
-  })
-  if (intervals) {
-    out <- as.data.frame(rbind(matrix(rep(0, 3 * (days - 1)), ncol = 3), t(d)))
-    colnames(out) <- c("lwr", "dbl", "upr")
-  } else {
-    out <- c(rep(0, days - 1), d[2,])
-  }
-  out
-}
 
 dbl_time_br <- brasil %>% filter(total_deaths >= 20) %>%
   group_by(location) %>% filter(n() > 10) %>%
@@ -675,3 +591,20 @@ p <- estados_hora %>% group_by(date) %>%
 anim <- animate(p, duration = 30, fps = 25, end_pause = 100, 
                 width = 787, height = 500)
 anim_save("data/EstadosAnim.gif")
+
+cfrdeaths <- full_data %>% group_by(location) %>% filter(total_deaths >= 1000, row_number() == n(),
+                                            !location %in% c("World", "Brasil")) %>%
+  mutate(cfr = total_deaths/total_cases, total_deaths_log = log10(total_deaths))
+
+cfrdeaths %>%
+  ggplot(aes(x = total_deaths_log, y = cfr)) + geom_point() + 
+  geom_text(aes(label = location), vjust = 1.1) +
+  scale_y_continuous(breaks = seq(0, 1, 0.025), labels = function(x) paste0(100 * x, "%"),
+                     minor_breaks = NULL) +
+  scale_x_continuous(breaks = world_log_brks, labels = function(x) 10^x,
+                     minor_breaks = NULL, limits = c(3, NA)) +
+  labs(x = "Total Deaths", y = "Case Fatality Rate", title = "CFR vs Total Deaths") + 
+  geom_smooth(method = "lm")
+
+cor(cfrdeaths$total_deaths_log, cfrdeaths$cfr)
+log10    

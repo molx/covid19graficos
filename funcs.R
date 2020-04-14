@@ -1,0 +1,86 @@
+datastyle <- list(theme_light(), geom_line(size = 1), geom_point(),
+                  scale_x_date(date_breaks = "2 days", date_minor_breaks = "1 day",
+                               date_labels = "%d/%m"),
+                  theme(axis.text.x = element_text(angle = 45, hjust = 1),
+                        plot.title = element_text(hjust = 0.5),
+                        plot.margin = margin(0.2, 0.5, 0.2, 0.5, "cm")),
+                  labs(x = "Data", y = "Número de Casos"))
+
+
+get_full_data_style <- function(mindeaths, group = "País") {
+  list(theme_light(),
+       geom_line(aes(group = location, colour = location), size = 1),
+       geom_label_repel(aes(label = label), nudge_x = 1, na.rm = TRUE),
+       labs(x = "Dia", y = "Número de Casos", colour = group),
+       ggtitle(paste("Óbitos após o", mindeaths, "º óbito")),
+       theme(plot.title = element_text(hjust = 0.5),
+             plot.margin = margin(0.2, 0.5, 0.2, 0.5, "cm")),
+       scale_x_continuous(breaks = 1:100, minor_breaks = 1:100))
+}
+
+################################
+# Ministério da saúde
+# http://plataforma.saude.gov.br/novocoronavirus/
+# https://covid.saude.gov.br/
+
+#Calculating new cases by the difference between day and day - 1
+calc_new <- function(x) {
+  new <- x - lag(x)
+  new[is.na(new)] <- 0
+  new
+}
+
+na_to_zero <- function(x) {
+  ifelse(is.na(x), 0, x)
+}
+
+# Function to calculate theoretical exponetial growth
+# factor = the amount which grows
+# time = the time it takes to grow by factor
+# x = the time period to simulate
+# e.g.: factor = 2, time = 3, means doubles every 3 units of time
+growth_line <- function(factor, time, duration) {
+  x <- duration
+  y <- factor ^ (x / time)
+  data.frame(x = x, y = y)
+}
+
+# Calculate 10 power to use in log scale labels
+pot10 <- function(x) {10 ^ x}
+
+# Use pot10 to create strings formatted for the axis label
+pot10l <- function(x) {format(pot10(x), scientific = FALSE, big.mark = ",")}
+
+growth_line_log <- function(factor, time, duration) {
+  x <- duration
+  y <- duration * log10(factor) / time
+  data.frame(x = x, y = y)
+}
+
+
+growth_rate <- function(x) {
+  rate <- (x - lag(x)) / lag(x)
+  rate[is.na(rate)] <- 0
+  rate
+}
+
+doubling_time <- function(x) {
+  log(2) / log(1 + growth_rate(x))
+}
+
+doubling_time_lm <- function(x, days = 5, intervals = FALSE) {
+  d <- sapply((days):length(x), function(i) {
+    start <- i - days + 1
+    df <- data.frame(y = log10(x[start:i]), x = 1:days)
+    fit <- lm(y ~ x, data = df, weights = sqrt(seq_along(x)))
+    intervals <- log10(2)/confint(fit, 2)
+    c(intervals[2], log10(2)/fit$coef[2], intervals[1])
+  })
+  if (intervals) {
+    out <- as.data.frame(rbind(matrix(rep(0, 3 * (days - 1)), ncol = 3), t(d)))
+    colnames(out) <- c("lwr", "dbl", "upr")
+  } else {
+    out <- c(rep(0, days - 1), d[2,])
+  }
+  out
+}
