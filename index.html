@@ -26,7 +26,7 @@
     <script src="https://cdn.jsdelivr.net/npm/papaparse@5.2.0/papaparse.min.js"></script>
     <script src="js/data.js"></script>
     <script src="js/worldTrad.js"></script>
-    <script src="js/proc.min.js"></script>
+    <script src="js/proc.js"></script>
 
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-162813521-1"></script>
     <script>
@@ -80,7 +80,7 @@
             </ol>
             
             <h3 id="heading_graficos">Brasil</h3>
-            <div class="data_summary">
+            <div id="brasil_summary" class="sticky data_summary">
                 <div>
                     <span class="data_type">Última atualização:</span>
                     <span id="data_br_dia" class="data_value"></span>
@@ -127,7 +127,7 @@
             <h4>Estados separadamente</h4><br>
             <!--<span>Selecione um estado: </span>             -->
             
-            <div class="data_summary">
+            <div id="estado_summary" class="sticky data_summary">
                 <div>
                     <span class="data_type">Selecione um estado:</span>
                     <select id="sel_estado" style="margin: 0.3em 0 0 0;" class="js-example-basi" name="sel_estado"></select>
@@ -173,14 +173,15 @@
             <!--<span>Selecione uma região:</span>-->            
             <!-- <div class="plotLine"> -->
                 <!-- <div id="regiao_casos" class="plot plotNarrow plotShort"></div><div id="regiao_obitos" class="plot plotNarrow plotShort"></div> -->
-            <!-- </div> -->
+            <!-- </div> -->            
             
             <h3>Comparações com outros países</h3>
             
             <label for="sel_country">Selecione os países que deseja comparar:
-                <select id="sel_country" class="js-example-basic-multiple" name="countries" multiple="multiple">
-                </select>
-            </label><br/>
+                <div id="stickydiv" class="sticky">
+                    <select id="sel_country" class="js-example-basic-multiple" name="countries" multiple="multiple"></select>                        
+                </div>
+            </label>
             
             <div class="plotLine">
                 <div id="world_comp" class="plot plotNarrow plotTall"></div>

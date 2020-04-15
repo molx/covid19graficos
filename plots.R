@@ -7,6 +7,17 @@ library(gganimate)
 
 source("funcs.R")
 
+get_full_data_style <- function(mindeaths, group = "País") {
+  list(theme_light(),
+       geom_line(aes(group = location, colour = location), size = 1),
+       geom_label_repel(aes(label = label), nudge_x = 1, na.rm = TRUE),
+       labs(x = "Dia", y = "Número de Casos", colour = group),
+       ggtitle(paste("Óbitos após o", mindeaths, "º óbito")),
+       theme(plot.title = element_text(hjust = 0.5),
+             plot.margin = margin(0.2, 0.5, 0.2, 0.5, "cm")),
+       scale_x_continuous(breaks = 1:100, minor_breaks = 1:100))
+}
+
 # source <- "Fonte: 2019 Novel Coronavirus COVID-19 (2019-nCoV)\nData Repository by Johns Hopkins CSSE\nhttps://github.com/CSSEGISandData/COVID-19"
 
 # conf_raw <- "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_19-covid-Confirmed.csv"

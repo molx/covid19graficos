@@ -7,16 +7,7 @@ datastyle <- list(theme_light(), geom_line(size = 1), geom_point(),
                   labs(x = "Data", y = "Número de Casos"))
 
 
-get_full_data_style <- function(mindeaths, group = "País") {
-  list(theme_light(),
-       geom_line(aes(group = location, colour = location), size = 1),
-       geom_label_repel(aes(label = label), nudge_x = 1, na.rm = TRUE),
-       labs(x = "Dia", y = "Número de Casos", colour = group),
-       ggtitle(paste("Óbitos após o", mindeaths, "º óbito")),
-       theme(plot.title = element_text(hjust = 0.5),
-             plot.margin = margin(0.2, 0.5, 0.2, 0.5, "cm")),
-       scale_x_continuous(breaks = 1:100, minor_breaks = 1:100))
-}
+
 
 ################################
 # Ministério da saúde
