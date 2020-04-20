@@ -45,11 +45,21 @@
 }
 
 .plotButton text {
-    x: 50%;
-    y: 50%;
     text-anchor: middle;
 }
 
 svg { 
     overflow: visible;
+}
+
+
+@media (max-width: 600px) {
+    .plotNarrow,
+    .plotWide {
+        width: 100%;
+    }
+
+    .plotLine {
+        display: block;
+    }
 }
