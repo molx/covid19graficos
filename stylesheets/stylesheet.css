@@ -673,6 +673,10 @@ select {
 }
 
 @media (max-width: 800px) {
+    #social {
+        float: none;
+    }
+
     #tips {
       display: none;
     }
