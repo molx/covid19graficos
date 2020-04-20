@@ -53,7 +53,7 @@ svg {
 }
 
 
-@media (max-width: 600px) {
+@media (max-width: 800px) {
     .plotNarrow,
     .plotWide {
         width: 100%;

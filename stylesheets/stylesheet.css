@@ -672,7 +672,7 @@ select {
     z-index: 2;
 }
 
-@media (max-width: 600px) {
+@media (max-width: 800px) {
     #tips {
       display: none;
     }
