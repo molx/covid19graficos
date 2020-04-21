@@ -5,7 +5,7 @@ library(grid)
 library(ggrepel)
 library(gganimate)
 
-source("funcs.R")
+source("funcs.R", encoding= "utf8")
 
 get_full_data_style <- function(mindeaths, group = "País") {
   list(theme_light(),
@@ -223,6 +223,17 @@ brasil_dbl_plot <- brasil_dbl_time %>%
   
 brasil_dbl_plot
 
+nma <- 7
+brasil_ma <- brasil %>% filter(location == "Brasil") %>% 
+  mutate(new_deaths_ma = round(ma(new_deaths, nma)))
+
+ggplot(brasil_ma, aes(x = date, y = new_deaths_ma)) + datastyle +
+  ggtitle(paste("Novos Óbitos - Brasil (média móvel,", nma, "dias)")) + 
+  annotate("text", x = brasil_ma$date[1], y = max(brasil_ma$new_deaths_ma, na.rm = TRUE), 
+           label = "Fonte: Ministério da Saúde", hjust = 0, vjust = 0) +
+  # annotate("text", x = max(brasil_ma$date), y = brasil_ma$new_deaths_ma[nrow(brasil_ma) - (nma - 1)/2], 
+  #          label = brasil_ma$new_deaths_ma[nrow(brasil_ma) - (nma - 1)/2], hjust = 1.1)
+
 # Gráficos por estado
 
 ufs <- unique(brasil$location)
@@ -241,15 +252,15 @@ for (uf in ufs) {
              label = max(ts$total_cases), hjust = 1.1)
   
   p1
-  tot_range_new <- seq(min(ts$new_cases), max(ts$new_cases))  
-  p2 <- ggplot(ts, aes(x = date, y = new_cases)) + datastyle +
+  tot_range_new <- seq(min(ts$new_deaths), max(ts$new_deaths))  
+  p2 <- ggplot(ts, aes(x = date, y = new_deaths)) + datastyle +
     scale_y_continuous(breaks = pretty(tot_range_new), 
                        limits = c(min(tot_range_new), max(tot_range_new) * 1.05)) + 
-    ggtitle(paste("Novos Casos Confirmados -", uf)) + 
-    annotate("text", x = ts$date[1], y = max(ts$new_cases) * 1.01, 
+    ggtitle(paste("Novos Óbitos -", uf)) + 
+    annotate("text", x = ts$date[1], y = max(ts$new_deaths) * 1.01, 
              label = "Fonte: Ministério da Saúde", hjust = 0, vjust = 0) +
-    annotate("text", x = max(ts$date), y = last(ts$new_cases), 
-             label = last(ts$new_cases), hjust = 1.1)
+    annotate("text", x = max(ts$date), y = last(ts$new_deaths), 
+             label = last(ts$new_deaths), hjust = 1.1)
   p2
   
   ggsave(paste0("data/", uf, "-Total.png"), plot = p1,
@@ -375,7 +386,7 @@ dbl_time <- full_data %>% filter(total_deaths >= 20) %>%
 
 write_excel_csv(dbl_time, "data/dbl_time.csv")
 
-source("fetch-ms-data.R", encoding= "utf8")
+source("fetch-ms-data.R", encoding = "utf8")
 
 full_data %>% filter(location == "Brazil") %>% tail
 

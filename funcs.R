@@ -21,6 +21,17 @@ calc_new <- function(x) {
   new
 }
 
+ma <- function(x, n = 5) {
+  stats::filter(x, rep(1 / n, n), sides = 2)
+}
+
+ma2 <- function(x, n = 5) {
+  d <- (n - 1)/2
+  sapply(seq_along(x), function(i) {
+    mean(x[max(1, i - d):min(i + d, length(x))])
+  })
+} 
+
 na_to_zero <- function(x) {
   ifelse(is.na(x), 0, x)
 }
