@@ -21,8 +21,8 @@ calc_new <- function(x) {
   new
 }
 
-ma <- function(x, n = 5) {
-  stats::filter(x, rep(1 / n, n), sides = 2)
+ma <- function(x, n = 7) {
+  stats::filter(x, rep(1 / n, n), sides = 1)
 }
 
 ma2 <- function(x, n = 5) {

@@ -19,9 +19,12 @@
     <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/plots.css">
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.js"></script>
-    <script src="https://code.highcharts.com/8.0.4/highcharts.js"></script>
+    <!-- <script src="https://code.highcharts.com/8.0.4/highcharts.js"></script> -->
+    <script src="https://code.highcharts.com/stock/8.0.4/highstock.js"></script>
     <script src="https://code.highcharts.com/8.0.4/highcharts-more.js"></script>
     <script src="https://code.highcharts.com/8.0.4/modules/exporting.js"></script>
+    
+    <script src="https://code.highcharts.com/stock/8.0.4/indicators/indicators.js"></script>
     <script src="https://code.highcharts.com/8.0.4/modules/data.js"></script>
     <script src="http://google.github.io/palette.js/palette.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/papaparse@5.2.0/papaparse.min.js"></script>
@@ -105,8 +108,9 @@
                 <div id="br_casos" class="plot plotNarrow plotShort"></div><div id="br_obitos" class="plot plotNarrow plotShort"></div>
             </div>
             <div class="plotLine">
-                <div id="br_novoscasos" class="plot plotNarrow plotShort"></div><div id="br_novosobitos" class="plot plotNarrow plotShort"></div>
+                <div id="br_novoscasos" class="plot plotNarrow plotTall"></div><div id="br_novosobitos" class="plot plotNarrow plotTall"></div>
             </div>
+            <p><small>A média móvel representa o aumento médio dos últimos 7 dias. Esta medida ajuda a observar a tendência de variação, especialmente quando há irregularidade nos números de novos casos e óbitos em virtude da forma que os exames são realizados e processados e não da evolução da doença, o que tem ocorrido com frequência no Brasil.</small></p>
             <div class="plotLine">
                 <div id="br_CFR" class="plot plotNarrow plotShort"></div><div id="br_DBL" class="plot plotNarrow plotShort"></div>
             </div>
@@ -150,7 +154,7 @@
                 <div id="estado_casos" class="plot plotNarrow plotShort"></div><div id="estado_obitos" class="plot plotNarrow plotShort"></div>
             </div>
             <div class="plotLine">
-                <div id="estado_novoscasos" class="plot plotNarrow plotShort"></div><div id="estado_novosobitos" class="plot plotNarrow plotShort"></div>
+                <div id="estado_novoscasos" class="plot plotNarrow plotTall"></div><div id="estado_novosobitos" class="plot plotNarrow plotTall"></div>
             </div>
             <div class="plotLine">
                 <div id="estado_DBL" class="plot plotNarrow plotShort"></div>
