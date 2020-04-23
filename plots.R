@@ -227,7 +227,7 @@ nma <- 7
 brasil_ma <- brasil %>% filter(location == "Brasil") %>% 
   mutate(new_deaths_ma = round(ma(new_deaths, nma)))
 
-ggplot(brasil_ma, aes(x = date, y = new_deaths_ma)) + theme_light() +
+brasil_ma_plot <- ggplot(brasil_ma, aes(x = date, y = new_deaths_ma)) + theme_light() +
   geom_step(size = 1, direction = "mid" ) +
   scale_x_date(date_breaks = "2 days", date_minor_breaks = "1 day",
              date_labels = "%d/%m", limits = c(brasil_ma$date[which(!is.na(brasil_ma$new_deaths_ma))[1]], NA)) +
@@ -240,6 +240,17 @@ ggplot(brasil_ma, aes(x = date, y = new_deaths_ma)) + theme_light() +
            label = "Fonte: Ministério da Saúde", hjust = 0, vjust = 0) 
   # annotate("text", x = max(brasil_ma$date), y = brasil_ma$new_deaths_ma[nrow(brasil_ma) - (nma - 1)/2], 
   #          label = brasil_ma$new_deaths_ma[nrow(brasil_ma) - (nma - 1)/2], hjust = 1.1)
+
+brasil_ma_plot
+
+ggsave(paste0("data/Brasil - Média Móvel Óbitos.png"), plot = brasil_ma_plot,
+       device = png(),
+       width = 20,
+       height = 10,
+       units = "cm",
+       dpi = 100)
+dev.off()
+
 
 # Gráficos por estado
 
