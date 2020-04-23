@@ -185,11 +185,12 @@ brasil_log_plot + theme_light() + #datastyle + # ablines +
   #          hjust = -0.05) 
 
 
-dbl_time_br <- brasil %>% filter(total_deaths >= 20) %>%
+dbl_time_br <- brasil %>% filter(total_deaths >= 100) %>%
   group_by(location) %>% filter(n() > 10) %>%
   mutate(dbl_time = round(doubling_time_lm(total_deaths, 5), 2),
          dbl_time_lwr = round(doubling_time_lm(total_deaths, 5, TRUE)$lwr, 2),
-         dbl_time_upr = round(doubling_time_lm(total_deaths, 5, TRUE)$upr, 2)) %>%
+         dbl_time_upr = round(doubling_time_lm(total_deaths, 5, TRUE)$upr, 2),
+         day_deaths = 1:n()) %>%
   filter(dbl_time > 0) %>% select(-new_cases, -new_deaths, -total_cases, -total_deaths)
 
 write_excel_csv(dbl_time_br, "data/dbl_time_br.csv")
@@ -395,11 +396,12 @@ dev.off()
 full_data <- read_csv("https://covid.ourworldindata.org/data/ecdc/full_data.csv") %>% 
   mutate(date = as.Date(date))
 
-dbl_time <- full_data %>% filter(total_deaths >= 20) %>%
+dbl_time <- full_data %>% filter(total_deaths >= 100) %>%
   group_by(location) %>% filter(n() > 10) %>%
   mutate(dbl_time = round(doubling_time_lm(total_deaths, 5), 2),
          dbl_time_lwr = round(doubling_time_lm(total_deaths, 5, TRUE)$lwr, 2),
-         dbl_time_upr = round(doubling_time_lm(total_deaths, 5, TRUE)$upr, 2)) %>%
+         dbl_time_upr = round(doubling_time_lm(total_deaths, 5, TRUE)$upr, 2),
+         day_deaths = 1:n()) %>%
   filter(dbl_time > 0) %>% select(-new_cases, -new_deaths, -total_cases, -total_deaths)
 
 write_excel_csv(dbl_time, "data/dbl_time.csv")
