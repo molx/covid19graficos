@@ -164,6 +164,12 @@ brasil_log_plot + theme_light() + #datastyle + # ablines +
   geom_smooth(data = brasil_log_data[24:30,], method = "lm", se = FALSE,
               fullrange = TRUE, level = 0.95, formula = y ~ x, size = 0.5, linetype = "f4") +
   geom_vline(xintercept = 30, linetype = "6a") + 
+  geom_smooth(data = brasil_log_data[31:37,], method = "lm", se = FALSE,
+              fullrange = TRUE, level = 0.95, formula = y ~ x, size = 0.5, linetype = "f4") +
+  geom_vline(xintercept = 37, linetype = "6a") + 
+  geom_smooth(data = brasil_log_data[38:44,], method = "lm", se = FALSE,
+              fullrange = TRUE, level = 0.95, formula = y ~ x, size = 0.5, linetype = "f4") +
+  geom_vline(xintercept = 44, linetype = "6a") + 
   # geom_smooth(data = tail(brasil_log_data, 7), method = "lm",
   #             fullrange = TRUE, level = 0.95, formula = y ~ x, size = 0.5, linetype = "f4") +
   geom_point(data = brasil_log_data, aes(x = time, y = total_deaths)) +
@@ -176,6 +182,10 @@ brasil_log_plot + theme_light() + #datastyle + # ablines +
   annotate("text", x = 23, y = 1, label = "+21 dias",
            hjust = -0.05) +
   annotate("text", x = 30, y = 1, label = "+28 dias",
+           hjust = -0.05) +
+  annotate("text", x = 37, y = 1, label = "+35 dias",
+           hjust = -0.05) +
+  annotate("text", x = 44, y = 1, label = "+42 dias",
            hjust = -0.05)
   # geom_vline(xintercept = 10, linetype = "6a") +
   # annotate("text", x = 10, y = 2.3, label = "Pronunciamento Bolsonaro",
@@ -184,12 +194,12 @@ brasil_log_plot + theme_light() + #datastyle + # ablines +
   # annotate("text", x = 17, y = 2, label = "Pronunciamento Bolsonaro\n+7 dias",
   #          hjust = -0.05) 
 
-
+dbl_time_ref <- 7
 dbl_time_br <- brasil %>% filter(total_deaths >= 100) %>%
   group_by(location) %>% filter(n() > 10) %>%
-  mutate(dbl_time = round(doubling_time_lm(total_deaths, 5), 2),
-         dbl_time_lwr = round(doubling_time_lm(total_deaths, 5, TRUE)$lwr, 2),
-         dbl_time_upr = round(doubling_time_lm(total_deaths, 5, TRUE)$upr, 2),
+  mutate(dbl_time = round(doubling_time_lm(total_deaths, dbl_time_ref), 2),
+         dbl_time_lwr = round(doubling_time_lm(total_deaths, dbl_time_ref, TRUE)$lwr, 2),
+         dbl_time_upr = round(doubling_time_lm(total_deaths, dbl_time_ref, TRUE)$upr, 2),
          day_deaths = 1:n()) %>%
   filter(dbl_time > 0) %>% select(-new_cases, -new_deaths, -total_cases, -total_deaths)
 
@@ -206,10 +216,10 @@ dobling_time_lookup <- function(cases) {
 }
 
 dbl_time_intervals <- doubling_time_lm(filter(brasil, location == "Brasil", total_deaths > 0)$total_deaths,
-                                       5, TRUE)
+                                       dbl_time_ref, TRUE)
 
 brasil_dbl_time <- brasil %>% filter(location == "Brasil", total_deaths > 0) %>%
-  mutate(dbl_time = doubling_time_lm(total_deaths, 5),
+  mutate(dbl_time = doubling_time_lm(total_deaths, dbl_time_ref),
          dbl_time_lwr = dbl_time_intervals$lwr,
          dbl_time_upr = dbl_time_intervals$upr) %>%
   filter(total_deaths > 100)

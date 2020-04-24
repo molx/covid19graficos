@@ -70,11 +70,12 @@ doubling_time <- function(x) {
   log(2) / log(1 + growth_rate(x))
 }
 
-doubling_time_lm <- function(x, days = 5, intervals = FALSE) {
+doubling_time_lm <- function(x, days = 7, intervals = FALSE) {
   d <- sapply((days):length(x), function(i) {
     start <- i - days + 1
     df <- data.frame(y = log10(x[start:i]), x = 1:days)
-    fit <- lm(y ~ x, data = df, weights = sqrt(seq_along(x)))
+    # fit <- lm(y ~ x, data = df, weights = sqrt(seq_along(x)))
+    fit <- lm(y ~ x, data = df)
     intervals <- log10(2)/confint(fit, 2)
     c(intervals[2], log10(2)/fit$coef[2], intervals[1])
   })
