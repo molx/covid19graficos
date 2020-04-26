@@ -408,9 +408,9 @@ full_data <- read_csv("https://covid.ourworldindata.org/data/ecdc/full_data.csv"
 
 dbl_time <- full_data %>% filter(total_deaths >= 100) %>%
   group_by(location) %>% filter(n() > 10) %>%
-  mutate(dbl_time = round(doubling_time_lm(total_deaths, 5), 2),
-         dbl_time_lwr = round(doubling_time_lm(total_deaths, 5, TRUE)$lwr, 2),
-         dbl_time_upr = round(doubling_time_lm(total_deaths, 5, TRUE)$upr, 2),
+  mutate(dbl_time = round(doubling_time_lm(total_deaths, dbl_time_ref), 2),
+         dbl_time_lwr = round(doubling_time_lm(total_deaths, dbl_time_ref, TRUE)$lwr, 2),
+         dbl_time_upr = round(doubling_time_lm(total_deaths, dbl_time_ref, TRUE)$upr, 2),
          day_deaths = 1:n()) %>%
   filter(dbl_time > 0) %>% select(-new_cases, -new_deaths, -total_cases, -total_deaths)
 
