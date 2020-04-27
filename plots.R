@@ -239,7 +239,7 @@ brasil_ma <- brasil %>% filter(location == "Brasil") %>%
   mutate(new_deaths_ma = round(ma(new_deaths, nma)))
 
 brasil_ma_plot <- ggplot(brasil_ma, aes(x = date, y = new_deaths_ma)) + theme_light() +
-  geom_bar(stat = "identity", aes(x = date, y = new_deaths)) +
+  #geom_bar(stat = "identity", aes(x = date, y = new_deaths)) +
   geom_step(size = 1, direction = "mid" ) +
   scale_x_date(date_breaks = "2 days", date_minor_breaks = "1 day",
              date_labels = "%d/%m", limits = c(brasil_ma$date[which(!is.na(brasil_ma$new_deaths_ma))[1]], NA)) +
