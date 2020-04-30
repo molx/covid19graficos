@@ -241,6 +241,7 @@ brasil_ma <- brasil %>% filter(location == "Brasil") %>%
 brasil_ma_plot <- ggplot(brasil_ma, aes(x = date, y = new_deaths_ma)) + theme_light() +
   #geom_bar(stat = "identity", aes(x = date, y = new_deaths)) +
   geom_step(size = 1, direction = "mid" ) +
+  scale_y_continuous(limits = c(NA, max(brasil_ma$new_deaths_ma, na.rm = TRUE) * 1.20)) +
   scale_x_date(date_breaks = "2 days", date_minor_breaks = "1 day",
              date_labels = "%d/%m", limits = c(brasil_ma$date[which(!is.na(brasil_ma$new_deaths_ma))[1]], NA)) +
   theme(axis.text.x = element_text(angle = 45, hjust = 1),
@@ -274,7 +275,7 @@ for (uf in ufs) {
   tot_range <- seq(min(ts$total_cases), max(ts$total_cases))  
   p1 <- ggplot(ts, aes(x = date, y = total_cases)) + datastyle +
     scale_y_continuous(breaks = pretty(tot_range), 
-                       limits = c(min(tot_range), max(tot_range) * 1.05)) + 
+                       limits = c(min(tot_range), max(tot_range) * 1.20)) + 
     ggtitle(paste("Casos Confirmados -", uf)) + 
     annotate("text", x = ts$date[1], y = max(ts$total_cases) * 1.01, 
              label = "Fonte: Ministério da Saúde", hjust = 0, vjust = 0) +
@@ -285,7 +286,7 @@ for (uf in ufs) {
   tot_range_new <- seq(min(ts$new_deaths), max(ts$new_deaths))  
   p2 <- ggplot(ts, aes(x = date, y = new_deaths)) + datastyle +
     scale_y_continuous(breaks = pretty(tot_range_new), 
-                       limits = c(min(tot_range_new), max(tot_range_new) * 1.05)) + 
+                       limits = c(min(tot_range_new), max(tot_range_new) * 1.20)) + 
     ggtitle(paste("Novos Óbitos -", uf)) + 
     annotate("text", x = ts$date[1], y = max(ts$new_deaths) * 1.01, 
              label = "Fonte: Ministério da Saúde", hjust = 0, vjust = 0) +
@@ -524,6 +525,7 @@ death_time_data <- brasil %>% filter(location == "Brasil" & total_deaths > 0)
 
 death_time_plot <- death_time_data %>%
   ggplot(aes(x = date, y = total_deaths)) + datastyle +
+  scale_y_continuous(limits=c(NA, max(death_time_data$total_deaths) * 1.20)) +
   ggtitle("Óbitos - Brasil") + 
   labs(y = "Óbitos") +
   annotate("text", x = death_time_data$date[1], y = max(death_time_data$total_deaths) * 1.01, 
