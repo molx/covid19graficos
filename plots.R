@@ -5,6 +5,7 @@ library(grid)
 library(ggrepel)
 library(gganimate)
 
+source("fetch-ms-data.R", encoding = "utf8")
 source("funcs.R", encoding= "utf8")
 
 get_full_data_style <- function(mindeaths, group = "País") {
@@ -120,16 +121,16 @@ brasil_log_plot + theme_light() + #datastyle + # ablines +
                                      format = "%d/%m")) +
   scale_y_continuous(limits = c(NA, max(estimates$y.upr) * 1.1), breaks = br_log_brks, labels = pot10l,
                      minor_breaks = NULL) +
-  labs(x = "Data", y = "Casos (log)") +
-  ggtitle(paste("Previsão de casos de acordo com últimos", est_ref_interval, "dias")) +
+  labs(x = "Data", y = "Óbitos (log)") +
+  ggtitle(paste("Previsão de óbitos de acordo com últimos", est_ref_interval, "dias")) +
   geom_smooth(data = tail(brasil_log_data, est_ref_interval), method = "lm",
               fullrange = TRUE, level = 0.95, formula = y ~ x, size = 0.5, linetype = "f4") +
-  geom_text(aes(x = time, y = total_cases, label = round(pot10(total_cases))),
-            hjust = 1.1, vjust = -0.1, size = 3) +
-  geom_point(data = brasil_log_data, aes(x = time, y = total_cases)) +
-  geom_text(data = estimates, aes(x = x, y = y.upr, label = round(pot10(y.upr))),
+  #geom_text(aes(x = time, y = total_cases, label = round(pot10(total_cases))),
+  #          hjust = 1.1, vjust = -0.1, size = 3) +
+  #geom_point(data = brasil_log_data, aes(x = time, y = total_cases)) +
+  geom_text(data = estimates, aes(x = x, y = y.upr * 1.01, label = round(pot10(y.upr))),
             hjust = 1.1, vjust = -1.5, size = 3) +
-  geom_text(data = estimates, aes(x = x, y = y.lwr, label = round(pot10(y.lwr))),
+  geom_text(data = estimates, aes(x = x, y = y.lwr * 0.99, label = round(pot10(y.lwr))),
             hjust = 1.1, vjust = 1.5, size = 3) +
   geom_text(data = estimates, aes(x = x, y = y.fit, label = round(pot10(y.fit))),
             hjust = 1.1, vjust = -0.1, size = 3) 
@@ -170,8 +171,9 @@ brasil_log_plot + theme_light() + #datastyle + # ablines +
   geom_smooth(data = brasil_log_data[38:44,], method = "lm", se = FALSE,
               fullrange = TRUE, level = 0.95, formula = y ~ x, size = 0.5, linetype = "f4") +
   geom_vline(xintercept = 44, linetype = "6a") + 
-  # geom_smooth(data = tail(brasil_log_data, 7), method = "lm",
-  #             fullrange = TRUE, level = 0.95, formula = y ~ x, size = 0.5, linetype = "f4") +
+  geom_smooth(data = brasil_log_data[45:51,], method = "lm", se = FALSE,
+              fullrange = TRUE, level = 0.95, formula = y ~ x, size = 0.5, linetype = "f4") +
+  geom_vline(xintercept = 44, linetype = "6a") + 
   geom_point(data = brasil_log_data, aes(x = time, y = total_deaths)) +
   annotate("text", x = 2, y = 3, label = "Início das medidas\nde isolamento (SP)",
            hjust = -0.05) +

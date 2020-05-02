@@ -1,19 +1,18 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:fb="http://ogp.me/ns/fb#">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:fb="http://ogp.me/ns/fb#">
 
 <head>
     <meta charset='utf-8'>
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
     <meta name="description" content="Gráficos detalhados do avanço da COVID-19 no Brasil">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link href='images/favicon.ico' rel='icon' type='image/x-icon' />
     <meta property="og:image" content="http://covid19graficos.com.br/images/ogimage.png" />
     <meta property="og:url" content="http://covid19graficos.com.br/" />
-    <meta property="og:description" content="Gráficos detalhados do avanço da COVID-19 no Brasil."/>
-    <meta property="og:locale" content="pt_BR"/>
+    <meta property="og:description" content="Gráficos detalhados do avanço da COVID-19 no Brasil." />
+    <meta property="og:locale" content="pt_BR" />
     <meta property="og:type" content="website" />
-    
+
     <link href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css" rel="stylesheet" />
     <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
     <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/plots.css">
@@ -26,18 +25,19 @@
     <!-- <script src="https://code.highcharts.com/8.0.4/highcharts.js"></script> -->
     <script src="https://code.highcharts.com/stock/8.0.4/highstock.js"></script>
     <script src="https://code.highcharts.com/8.0.4/highcharts-more.js"></script>
-    <script src="https://code.highcharts.com/8.0.4/modules/exporting.js"></script>    
+    <script src="https://code.highcharts.com/8.0.4/modules/exporting.js"></script>
     <script src="https://code.highcharts.com/stock/8.0.4/indicators/indicators.js"></script>
-    <script src="https://code.highcharts.com/8.0.4/modules/data.js"></script>    
+    <script src="https://code.highcharts.com/8.0.4/modules/data.js"></script>
+    <!-- <script src="https://cdn.jsdelivr.net/gh/larsac07/Motion-Highcharts-Plugin/motion.js"></script> -->
 
     <script src="js/data.js"></script>
     <script src="js/worldTrad.js"></script>
-    <script src="js/proc.min.js"></script>
+    <script src="js/proc.js"></script>
 
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-162813521-1"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
+        function gtag() { dataLayer.push(arguments); }
         gtag('js', new Date());
 
         gtag('config', 'UA-162813521-1');
@@ -46,21 +46,22 @@
     <title>COVID-19 no Brasil</title>
 </head>
 
-<body> 
+<body>
 
     <!-- HEADER -->
     <div id="header_wrap" class="outer">
         <header class="inner">
             <a id="forkme_banner" href="https://github.com/molx/covid19graficos" target="_blank">Ver no GitHub</a>
             <div id="social">
-                <a href="https://www.instagram.com/covid19br.graficos/" target="_blank"><img src="images/instagram.png"><span>covid19br.graficos</span></a>
+                <a href="https://www.instagram.com/covid19br.graficos/" target="_blank"><img
+                        src="images/instagram.png"><span>covid19br.graficos</span></a>
             </div>
-            
-            <h1 id="project_title">COVID-19 no Brasil</h1>            
+
+            <h1 id="project_title">COVID-19 no Brasil</h1>
         </header>
-    </div>    
+    </div>
     <!-- MAIN CONTENT -->
-    <div id="main_content_wrap" class="outer">     
+    <div id="main_content_wrap" class="outer">
         <div id="loading" class="loading">
             <div>
                 <img src="images/loading.gif"><br>
@@ -84,13 +85,13 @@
                 <li><a href="#heading_fontes">Fontes dos Dados</a></li>
                 <li><a href="#heading_outras">Outras Fontes</a></li>
             </ol>
-            
+
             <h3 id="heading_graficos">Brasil</h3>
             <div id="brasil_summary" class="sticky data_summary">
                 <div>
                     <span class="data_type">Última atualização:</span>
                     <span id="data_br_dia" class="data_value"></span>
-                    
+
                 </div>
                 <div>
                     <span class="data_type">Casos confirmados:</span>
@@ -103,21 +104,31 @@
                 <div>
                     <span class="data_type">Letalidade:</span>
                     <span id="data_br_CFR" class="data_value"></span>
-                </div>            
+                </div>
             </div>
-            
+
             <div class="plotLine">
-                <div id="br_casos" class="plot plotNarrow plotShort"></div><div id="br_obitos" class="plot plotNarrow plotShort"></div>
+                <div id="br_casos" class="plot plotNarrow plotShort"></div>
+                <div id="br_obitos" class="plot plotNarrow plotShort"></div>
             </div>
             <div class="plotLine">
-                <div id="br_novoscasos" class="plot plotNarrow plotTall"></div><div id="br_novosobitos" class="plot plotNarrow plotTall"></div>
+                <div id="br_novoscasos" class="plot plotNarrow plotTall"></div>
+                <div id="br_novosobitos" class="plot plotNarrow plotTall"></div>
             </div>
-            <p><small>A média móvel representa o aumento médio dos últimos 7 dias. Esta medida ajuda a observar a tendência de variação, especialmente quando há irregularidade nos números de novos casos e óbitos em virtude da forma que os exames são realizados e processados e não da evolução da doença, o que tem ocorrido com frequência no Brasil.</small></p>
+            <p><small>A média móvel representa o aumento médio dos últimos 7 dias. Esta medida ajuda a observar a
+                    tendência de variação, especialmente quando há irregularidade nos números de novos casos e óbitos em
+                    virtude da forma que os exames são realizados e processados e não da evolução da doença, o que tem
+                    ocorrido com frequência no Brasil.</small></p>
             <div class="plotLine">
-                <div id="br_CFR" class="plot plotNarrow plotShort"></div><div id="br_DBL" class="plot plotNarrow plotShort"></div>
+                <div id="br_CFR" class="plot plotNarrow plotShort"></div>
+                <div id="br_DBL" class="plot plotNarrow plotShort"></div>
             </div>
-            <p><sup>*</sup><small>O <b>tempo de duplicação</b> indica quantos dias o número de casos ou óbitos demora para dobrar. Como a quantidade de novos casos e óbitos não cresce numa taxa constante, o resultado deste cálculo depende do método utilizado. Neste gráfico, o tempo de duplicação é calculado por uma regressão linear do número de óbitos, em escala log, dos últimos 5 dias. Um tempo de duplicação maior indica que os casos estão crescendo em menor velocidade, o que é desejável.</small></p>
-            
+            <p><sup>*</sup><small>O <b>tempo de duplicação</b> indica quantos dias o número de casos ou óbitos demora
+                    para dobrar. Como a quantidade de novos casos e óbitos não cresce numa taxa constante, o resultado
+                    deste cálculo depende do método utilizado. Neste gráfico, o tempo de duplicação é calculado por uma
+                    regressão linear do número de óbitos, em escala log, dos últimos 5 dias. Um tempo de duplicação
+                    maior indica que os casos estão crescendo em menor velocidade, o que é desejável.</small></p>
+
             <h3>Estados</h3>
             <h4>Distribuição de casos e óbitos</h4>
             <div class="plotLine">
@@ -125,19 +136,28 @@
                 <div id="estados_dist_obitos" class="plot plotNarrow plotShort"></div>
             </div>
             <div class="plotLine">
-                
+
             </div>
             <div class="plotLine">
                 <div id="estados_CFR" class="plot plotNarrow plotShort"></div><br>
             </div>
-            
+            <!-- <div class="plotLine">
+                <div id="estados_obitos_race" class="plot plotWide plotTallest"></div>
+            </div>
+            <div id="play-controls">
+                <button id="play-pause-button" class="fa fa-play" title="play"></button>
+                <input id="play-range" type="range" value="0" min="0" max="10" />
+                <output id="play-output" for="play-range" name="year">16/03</output>
+            </div> -->
+
             <h4>Estados separadamente</h4><br>
             <!--<span>Selecione um estado: </span>             -->
-            
+
             <div id="estado_summary" class="sticky data_summary">
                 <div>
                     <span class="data_type">Selecione um estado:</span>
-                    <select id="sel_estado" style="margin: 0.3em 0 0 0;" class="js-example-basi" name="sel_estado"></select>
+                    <select id="sel_estado" style="margin: 0.3em 0 0 0;" class="js-example-basi"
+                        name="sel_estado"></select>
                 </div>
                 <div>
                     <span class="data_type">Casos:</span>
@@ -150,93 +170,125 @@
                 <div>
                     <span class="data_type">Letalidade:</span>
                     <span id="data_estado_CFR" class="data_value"></span>
-                </div>            
+                </div>
             </div>
             <div class="plotLine">
-                <div id="estado_casos" class="plot plotNarrow plotShort"></div><div id="estado_obitos" class="plot plotNarrow plotShort"></div>
+                <div id="estado_casos" class="plot plotNarrow plotShort"></div>
+                <div id="estado_obitos" class="plot plotNarrow plotShort"></div>
             </div>
             <div class="plotLine">
-                <div id="estado_novoscasos" class="plot plotNarrow plotTall"></div><div id="estado_novosobitos" class="plot plotNarrow plotTall"></div>
+                <div id="estado_novoscasos" class="plot plotNarrow plotTall"></div>
+                <div id="estado_novosobitos" class="plot plotNarrow plotTall"></div>
             </div>
             <div class="plotLine">
                 <div id="estado_DBL" class="plot plotNarrow plotShort"></div>
+                <div id="estado_mortalidade" class="plot plotNarrow plotShort"></div>
             </div>
-            
+
             <h4>Comparações entre estados</h4><br>
             <div class="plotLine">
-                <div id="estados_casos" class="plot plotNarrow plotTall"></div><div id="estados_obitos" class="plot plotNarrow plotTall"></div>
+                <div id="estados_casos" class="plot plotNarrow plotTall"></div>
+                <div id="estados_obitos" class="plot plotNarrow plotTall"></div>
             </div>
             <div class="plotLine">
-                <div id="estados_comp" class="plot plotNarrow plotTall"></div><div id="estados_DBL" class="plot plotNarrow plotTall"></div>
+                <div id="estados_comp" class="plot plotNarrow plotTall"></div>
+                <div id="estados_mortalidade" class="plot plotNarrow plotTall"></div>
             </div>
-            
+            <div class="plotLine">
+                <div id="estados_DBL" class="plot plotNarrow plotTall"></div>
+            </div>
+
             <!-- <h4>Comparações por regiões</h4><br> -->
             <!-- <div class="data_summary"> -->
-                <!-- <div> -->
-                    <!-- <span class="data_type">Selecione uma região:</span> -->
-                    <!-- <span id="" class=""><select id="sel_regiao" style="margin: 0.3em 0 0 0;"></select><br></span> -->
-                <!-- </div> -->
+            <!-- <div> -->
+            <!-- <span class="data_type">Selecione uma região:</span> -->
+            <!-- <span id="" class=""><select id="sel_regiao" style="margin: 0.3em 0 0 0;"></select><br></span> -->
             <!-- </div> -->
-            <!--<span>Selecione uma região:</span>-->            
+            <!-- </div> -->
+            <!--<span>Selecione uma região:</span>-->
             <!-- <div class="plotLine"> -->
-                <!-- <div id="regiao_casos" class="plot plotNarrow plotShort"></div><div id="regiao_obitos" class="plot plotNarrow plotShort"></div> -->
-            <!-- </div> -->            
-            
+            <!-- <div id="regiao_casos" class="plot plotNarrow plotShort"></div><div id="regiao_obitos" class="plot plotNarrow plotShort"></div> -->
+            <!-- </div> -->
+
             <h3>Comparações com outros países</h3>
-            
+
             <label for="sel_country">Selecione os países que deseja comparar:
                 <div id="stickydiv" class="sticky">
-                    <select id="sel_country" class="js-example-basic-multiple" name="countries" multiple="multiple"></select>                        
+                    <select id="sel_country" class="js-example-basic-multiple" name="countries"
+                        multiple="multiple"></select>
                 </div>
             </label>
-            
+
             <div class="plotLine">
                 <div id="world_comp" class="plot plotNarrow plotTall"></div>
                 <div id="world_comp_obitos" class="plot plotNarrow plotTall"></div>
             </div>
-            
+
             <div class="plotLine">
                 <div id="world_CFR" class="plot plotNarrow plotTall"></div>
                 <div id="world_CFR_comp" class="plot plotNarrow plotTall"></div>
             </div>
-            
+
             <div class="plotLine">
                 <div id="world_DBL" class="plot plotWide plotTall"></div><br>
             </div>
-            
+
             <!-- -->
             <h3 id="heading_fontes">Fontes dos dados</h3>
-            <p>A fonte dos dados de cara gráfico estão refenciadas no canto inferio esquerdo. No geral, os dados referentes ao Brasil (exceto nas comparações com outros países) são retirados do <a href="https://covid.saude.gov.br/">Painel Coronavírus</a> do Ministério da Saúde. Já os dados referentes a outros países (incluindo o Brasil quando comparado com outros países) são retirados do projeto <a href="https://ourworldindata.org/coronavirus-source-data">Our World in Data</a>, da Universidade de Oxford. É importante destacar que os dados do Our World in Data referentes ao Brasil tem um dia de "atraso" em relação aos dados oficiais, em virtude do horário de sincronização das plataformas e do fuso-horário utilizado como referência. Por este motivo, dados das duas fontes não são utilizados nos mesmos gráficos.</p>
-            
-            <p>Normalmente, os dados do Brasil também podem ser obtidos nos boletins diários publicados na <a href="https://www.saude.gov.br/noticias/agencia-saude">Agência Saúde</a>.  O MS também passou a disponibilizar os dados completos com as séries temporais, mas a planilha disponiblizada não possui padrão para formato dos dados e nome das colunas, o que dificulta seu uso automatizado. Caso deseje, você pode baixar os dados no mesmo formato do Our World In data utilizados neste site <a href="data/estados.csv">aqui</a>.</p>
+            <p>A fonte dos dados de cara gráfico estão refenciadas no canto inferio esquerdo. No geral, os dados
+                referentes ao Brasil (exceto nas comparações com outros países) são retirados do <a
+                    href="https://covid.saude.gov.br/">Painel Coronavírus</a> do Ministério da Saúde. Já os dados
+                referentes a outros países (incluindo o Brasil quando comparado com outros países) são retirados do
+                projeto <a href="https://ourworldindata.org/coronavirus-source-data">Our World in Data</a>, da
+                Universidade de Oxford. É importante destacar que os dados do Our World in Data referentes ao Brasil tem
+                um dia de "atraso" em relação aos dados oficiais, em virtude do horário de sincronização das plataformas
+                e do fuso-horário utilizado como referência. Por este motivo, dados das duas fontes não são utilizados
+                nos mesmos gráficos.</p>
+
+            <p>Normalmente, os dados do Brasil também podem ser obtidos nos boletins diários publicados na <a
+                    href="https://www.saude.gov.br/noticias/agencia-saude">Agência Saúde</a>. O MS também passou a
+                disponibilizar os dados completos com as séries temporais, mas a planilha disponiblizada não possui
+                padrão para formato dos dados e nome das colunas, o que dificulta seu uso automatizado. Caso deseje,
+                você pode baixar os dados no mesmo formato do Our World In data utilizados neste site <a
+                    href="data/estados.csv">aqui</a>.</p>
 
             <h3 id="heading_outras">Outras referências</h3>
-            <p>Diversos grupos estão compilando seus próprios dados e criando diferentes visualizações referente ao Coronavirus. Alguns destes são listados abaixo:</p>
+            <p>Diversos grupos estão compilando seus próprios dados e criando diferentes visualizações referente ao
+                Coronavirus. Alguns destes são listados abaixo:</p>
             <ul>
-                <li><a href="https://bigdata-covid19.icict.fiocruz.br/">Monitora Covid-19, painel de gráficos e mapas da Fiocruz</a></li>
+                <li><a href="https://bigdata-covid19.icict.fiocruz.br/">Monitora Covid-19, painel de gráficos e mapas da
+                        Fiocruz</a></li>
                 <li><a href="https://covid19br.github.io/index.html">Observatório COVID-19 BR</a></li>
                 <li><a href="http://covid19br.org/">Painel Coronavirus Brasil (Fiocruz Bahia/UFBA)</a></li>
-                <li><a href="https://www.coronavirusnobrasil.org/">Casos de COVID-19 no Brasil (Rice University)</a></li>                
-                <li><a href="https://liibre.github.io/coronabr/index.html">Pacote de R com os dados do Brasil e gráficos (coronabr)</a></li>
-                <li><a href="https://www.kaggle.com/unanimad/corona-virus-brazil">Repositório Kaggle com dados do Brasil por estado</a></li>
-                
-                    
+                <li><a href="https://www.coronavirusnobrasil.org/">Casos de COVID-19 no Brasil (Rice University)</a>
+                </li>
+                <li><a href="https://liibre.github.io/coronabr/index.html">Pacote de R com os dados do Brasil e gráficos
+                        (coronabr)</a></li>
+                <li><a href="https://www.kaggle.com/unanimad/corona-virus-brazil">Repositório Kaggle com dados do Brasil
+                        por estado</a></li>
+
+
             </ul>
             <p>Sites internacionais com informações de todo o mundo:</p>
             <ul>
-                <li><a href="https://www.who.int/emergencies/diseases/novel-coronavirus-2019/situation-reports">Situation Reports da Organização Mundial da Saúde</a></li>
+                <li><a href="https://www.who.int/emergencies/diseases/novel-coronavirus-2019/situation-reports">Situation
+                        Reports da Organização Mundial da Saúde</a></li>
                 <li><a href="https://ourworldindata.org/coronavirus">Our World in Data (University of Oxford)</a></li>
-                <li><a href="https://coronavirus.jhu.edu/map.html">Coronavirus COVID-19 Global Cases (Johns Hopkins University)</a></li>
+                <li><a href="https://coronavirus.jhu.edu/map.html">Coronavirus COVID-19 Global Cases (Johns Hopkins
+                        University)</a></li>
                 <li><a href="https://www.worldometers.info/coronavirus/">Worldometer COVID-19 Pandemic</a></li>
-                <li><a href="https://www.coronatracker.com/ptbr/country/br/">CoronaTracker - Gráficos e Clipping</a></li>
+                <li><a href="https://www.coronatracker.com/ptbr/country/br/">CoronaTracker - Gráficos e Clipping</a>
+                </li>
             </ul>
-            
+
             <h3>Sobre</h3>
             <p>Site desenvolvido por <a href="http://www.alanmol.com.br">Alan Mól</a>.</p>
-            <p>O site está em constante desenvolvimento, com atualizações diárias. <a href="contato.html">Clique aqui</a> para entrar em contato.</p>
-            
-            <p>A biblioteca utilizada para os gráficos é a <a href="https://highcharts.com">Highcharts.js</a>. O site é hospeado via <a href="https://pages.github.com/">GitHub Pages</a>.
-            
+            <p>O site está em constante desenvolvimento, com atualizações diárias. <a href="contato.html">Clique
+                    aqui</a> para entrar em contato.</p>
+
+            <p>A biblioteca utilizada para os gráficos é a <a href="https://highcharts.com">Highcharts.js</a>. O site é
+                hospeado via <a href="https://pages.github.com/">GitHub Pages</a>.
+
         </section>
     </div>
 
