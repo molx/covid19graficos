@@ -6,7 +6,7 @@
     column-gap: 5px;
 }
 
-.plot {    
+.plot {
     /*height: 300px;*/
     display: inline-block;
     margin: 0 0 10px 0;
@@ -41,7 +41,7 @@
     margin: 0 auto;
 }
 
-.highcharts-container { 
+.highcharts-container {
     overflow: visible !important;
     /*box-shadow: 0 5px 5px 0 rgba(0, 0, 0, 0.2);*/
 }
@@ -54,10 +54,9 @@
     text-anchor: middle;
 }
 
-svg { 
+svg {
     overflow: visible;
 }
-
 
 @media (max-width: 800px) {
     .plotNarrow,
@@ -69,7 +68,6 @@ svg {
         display: block;
     }
 }
-
 
 /* Race */
 
