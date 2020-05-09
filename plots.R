@@ -174,6 +174,9 @@ brasil_log_plot + theme_light() + #datastyle + # ablines +
   geom_smooth(data = brasil_log_data[45:51,], method = "lm", se = FALSE,
               fullrange = TRUE, level = 0.95, formula = y ~ x, size = 0.5, linetype = "f4") +
   geom_vline(xintercept = 44, linetype = "6a") + 
+  geom_smooth(data = brasil_log_data[52:57,], method = "lm", se = FALSE,
+              fullrange = TRUE, level = 0.95, formula = y ~ x, size = 0.5, linetype = "f4") +
+  geom_vline(xintercept = 51, linetype = "6a") + 
   geom_point(data = brasil_log_data, aes(x = time, y = total_deaths)) +
   annotate("text", x = 2, y = 3, label = "Início das medidas\nde isolamento (SP)",
            hjust = -0.05) +
@@ -188,6 +191,8 @@ brasil_log_plot + theme_light() + #datastyle + # ablines +
   annotate("text", x = 37, y = 1, label = "+35 dias",
            hjust = -0.05) +
   annotate("text", x = 44, y = 1, label = "+42 dias",
+           hjust = -0.05) +
+  annotate("text", x = 51, y = 1, label = "+48 dias",
            hjust = -0.05)
   # geom_vline(xintercept = 10, linetype = "6a") +
   # annotate("text", x = 10, y = 2.3, label = "Pronunciamento Bolsonaro",
