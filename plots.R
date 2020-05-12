@@ -250,7 +250,7 @@ brasil_ma_plot <- ggplot(brasil_ma, aes(x = date, y = new_deaths_ma)) + theme_li
   geom_step(size = 1, direction = "mid" ) +
   scale_y_continuous(limits = c(NA, max(brasil_ma$new_deaths_ma, na.rm = TRUE) * 1.20)) +
   scale_x_date(date_breaks = "2 days", date_minor_breaks = "1 day",
-             date_labels = "%d/%m", limits = c(brasil_ma$date[which(!is.na(brasil_ma$new_deaths_ma))[1]], NA)) +
+             date_labels = "%d/%m", limits = c(brasil_ma$date[which(brasil_ma$new_deaths_ma > 0)[1]], NA)) +
   theme(axis.text.x = element_text(angle = 45, hjust = 1),
         plot.title = element_text(hjust = 0.5),
         plot.margin = margin(0.2, 0.5, 0.2, 0.5, "cm")) +
@@ -276,31 +276,34 @@ dev.off()
 
 ufs <- unique(brasil$location)
 
-for (uf in ufs) {
+for (uf in "Brasil") {
   ts <- brasil %>% filter(location == uf)
   if (nrow(ts) <= 1) next
-  tot_range <- seq(min(ts$total_cases), max(ts$total_cases))  
+  tot_range <- seq(min(ts$total_cases), max(ts$total_cases))
   p1 <- ggplot(ts, aes(x = date, y = total_cases)) + datastyle +
-    scale_y_continuous(breaks = pretty(tot_range), 
-                       limits = c(min(tot_range), max(tot_range) * 1.20)) + 
-    ggtitle(paste("Casos Confirmados -", uf)) + 
-    annotate("text", x = ts$date[1], y = max(ts$total_cases) * 1.01, 
+    scale_y_continuous(breaks = pretty(tot_range),
+                       limits = c(min(tot_range), max(tot_range) * 1.20)) +
+    ggtitle(paste("Casos Confirmados -", uf)) +
+    annotate("text", x = ts$date[1], y = max(ts$total_cases) * 1.01,
              label = "Fonte: Ministério da Saúde", hjust = 0, vjust = 0) +
-    annotate("text", x = max(ts$date), y = max(ts$total_cases), 
+    annotate("text", x = max(ts$date), y = max(ts$total_cases),
              label = max(ts$total_cases), hjust = 1.1)
-  
+
   p1
-  tot_range_new <- seq(min(ts$new_deaths), max(ts$new_deaths))  
+  tot_range_new <- seq(min(ts$new_deaths), max(ts$new_deaths))
   p2 <- ggplot(ts, aes(x = date, y = new_deaths)) + datastyle +
-    scale_y_continuous(breaks = pretty(tot_range_new), 
-                       limits = c(min(tot_range_new), max(tot_range_new) * 1.20)) + 
-    ggtitle(paste("Novos Óbitos -", uf)) + 
-    annotate("text", x = ts$date[1], y = max(ts$new_deaths) * 1.01, 
+    scale_x_date(limits = c(min(filter(ts, total_deaths > 0)$date), NA),
+                 date_breaks = "2 days", date_minor_breaks = "1 day",
+                 date_labels = "%d/%m") +
+    scale_y_continuous(breaks = pretty(tot_range_new),
+                       limits = c(min(tot_range_new), max(tot_range_new) * 1.20)) +
+    ggtitle(paste("Novos Óbitos -", uf)) +
+    annotate("text", x = ts$date[1], y = max(ts$new_deaths) * 1.01,
              label = "Fonte: Ministério da Saúde", hjust = 0, vjust = 0) +
-    annotate("text", x = max(ts$date), y = last(ts$new_deaths), 
+    annotate("text", x = max(ts$date), y = last(ts$new_deaths),
              label = last(ts$new_deaths), hjust = 1.1)
   p2
-  
+
   ggsave(paste0("data/", uf, "-Total.png"), plot = p1,
          device = png(),
          width = 20,
@@ -452,39 +455,39 @@ lin_plot <- ggplot(lin_data, aes(day, total_deaths)) +
            label = "Fontes: https://ourworldindata.org/coronavirus\nMinistério da Saúde do",
            hjust = 0, vjust = 0.5)
 
-lin_plot
-
-ggsave(paste0("data/Comparação - Linear.png"), plot = lin_plot,
-       device = png(),
-       width = 20,
-       height = 10,
-       units = "cm",
-       dpi = 100)
-dev.off()
+# lin_plot
+# 
+# ggsave(paste0("data/Comparação - Linear.png"), plot = lin_plot,
+#        device = png(),
+#        width = 20,
+#        height = 10,
+#        units = "cm",
+#        dpi = 100)
+# dev.off()
 
 log_data <- lin_data %>%
   mutate(total_deaths = log10(total_deaths)) 
 
 world_log_brks <- log10(c(seq(2.5e2, 1e3, 2.5e2), seq(2.5e3, 1e4, 2.5e3), seq(2.5e4, 1e5, 2.5e4)))
 
-log_plot <- ggplot(log_data, aes(day, total_deaths)) + 
-  full_data_style +
-  labs(y = "Número de Casos (log10)") +
-  scale_y_continuous(breaks = world_log_brks, minor_breaks = NULL, labels = pot10) +
-  annotate("text", x = 1, y = max(log_data$total_deaths), 
-           label = "Fontes: https://ourworldindata.org/coronavirus\nMinistério da Saúde",
-           hjust = 0, vjust = 0.5)
-  
-  
-log_plot
-
-ggsave(paste0("data/Comparação - Log.png"), plot = log_plot,
-       device = png(),
-       width = 20,
-       height = 10,
-       units = "cm",
-       dpi = 100)
-dev.off()
+# log_plot <- ggplot(log_data, aes(day, total_deaths)) + 
+#   full_data_style +
+#   labs(y = "Número de Casos (log10)") +
+#   scale_y_continuous(breaks = world_log_brks, minor_breaks = NULL, labels = pot10) +
+#   annotate("text", x = 1, y = max(log_data$total_deaths), 
+#            label = "Fontes: https://ourworldindata.org/coronavirus\nMinistério da Saúde",
+#            hjust = 0, vjust = 0.5)
+#   
+#   
+# log_plot
+# 
+# ggsave(paste0("data/Comparação - Log.png"), plot = log_plot,
+#        device = png(),
+#        width = 20,
+#        height = 10,
+#        units = "cm",
+#        dpi = 100)
+# dev.off()
 
 comp_data <- full_data %>% filter(location %in% compare) %>%
   filter(total_deaths >= mindeaths ) %>% group_by(location) %>%
@@ -532,7 +535,7 @@ death_time_data <- brasil %>% filter(location == "Brasil" & total_deaths > 0)
 
 death_time_plot <- death_time_data %>%
   ggplot(aes(x = date, y = total_deaths)) + datastyle +
-  scale_y_continuous(limits=c(NA, max(death_time_data$total_deaths) * 1.20)) +
+  scale_y_continuous(limits = c(NA, max(death_time_data$total_deaths) * 1.20)) +
   ggtitle("Óbitos - Brasil") + 
   labs(y = "Óbitos") +
   annotate("text", x = death_time_data$date[1], y = max(death_time_data$total_deaths) * 1.01, 
