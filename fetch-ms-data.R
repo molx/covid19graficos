@@ -28,7 +28,7 @@ ms_data <- read_excel(ms_data_full) %>%
   filter(is.na(municipio), is.na(codmun), !is.na(estado), data == last(sort(data))) %>% 
   select(estado, data, casosAcumulado, obitosAcumulado) %>%
   rename(total_cases = casosAcumulado, total_deaths = obitosAcumulado, date = data) %>%
-  right_join(siglas)
+  right_join(siglas) %>% select(-estado)
 
 
 # cols <- c("nome", "qtd_confirmado", "qtd_obito")
