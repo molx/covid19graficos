@@ -5,7 +5,7 @@ library(grid)
 library(ggrepel)
 library(gganimate)
 
-#git add.;git commit -m "updating data";git push
+#git add .;git commit -m "updating data";git push
 
 source("fetch-ms-data.R", encoding = "utf8")
 source("funcs.R", encoding= "utf8")
