@@ -1,10 +1,10 @@
-datastyle <- list(theme_light(), geom_line(size = 1), geom_point(),
-                  scale_x_date(date_breaks = "2 days", date_minor_breaks = "1 day",
+datastyle <- list(theme_light(), #geom_line(size = 1), geom_point(),
+                  scale_x_date(date_breaks = "5 days", date_minor_breaks = "1 day",
                                date_labels = "%d/%m"),
                   theme(axis.text.x = element_text(angle = 45, hjust = 1),
                         plot.title = element_text(hjust = 0.5),
                         plot.margin = margin(0.2, 0.5, 0.2, 0.5, "cm")),
-                  labs(x = "Data", y = "Número de Casos"))
+                  labs(x = "Data", y = "Número de Casos", caption = "Fonte: Ministério da Saúde"))
 
 
 
