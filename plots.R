@@ -324,7 +324,7 @@ for (uf in "Brasil") {
 distplot <- estados %>% group_by(location) %>% filter(row_number() == n()) %>%
   ggplot(aes(x = reorder(location, -total_deaths), y = total_deaths)) + geom_bar(stat = "identity") +
   geom_text(aes(label = total_deaths), position = position_dodge(width = 0.9), 
-            vjust = -0.2, size = 3) +
+            vjust = -0.2, size = 2.2) +
   theme_light() + labs(x = "UF", y = "Óbitos") + ggtitle("Distribuição dos óbitos") +
   theme(axis.text.x = element_text(angle = 45, hjust = 1),
         plot.title = element_text(hjust = 0.5),
@@ -359,7 +359,7 @@ casos_por_hab_br <- obitos_confirmados$Obitos[obitos_confirmados$Estado == "Bras
 
 cph_plot <- obitos_confirmados %>% filter(Estado != "Brasil") %>%
   ggplot(aes(x = reorder(Estado, -Obitos), y = Obitos)) + geom_bar(stat = "identity") +
-  geom_text(aes(label = round(Obitos, 2)), position = position_dodge(width = 0.9),
+  geom_text(aes(label = round(Obitos, 0)), position = position_dodge(width = 0.9),
             vjust = -0.2, size = 3) +
   theme_light() + labs(x = "UF", y = "Óbitos/(habitantes/1,000,000)") + ggtitle("Óbitos por 1 milhão de habitantes") +
   theme(axis.text.x = element_text(angle = 45, hjust = 1),
@@ -370,7 +370,7 @@ cph_plot <- obitos_confirmados %>% filter(Estado != "Brasil") %>%
   #          label = "Fontes: Ministério da Saúde\nIBGE", hjust = 1, vjust = 1) +
   geom_hline(yintercept = casos_por_hab_br, linetype = "dashed") +
   annotate("text", x = 27, y = casos_por_hab_br,
-           label = paste("Brasil =", round(casos_por_hab_br, 2)),
+           label = paste("Brasil =", round(casos_por_hab_br, 0)),
            hjust = 1, vjust = -0.25)
 
 cph_plot
@@ -522,19 +522,19 @@ dev.off()
 
 ### Óbitos
 
-death_dist_plot <- estados %>% group_by(location) %>% filter(row_number() == n()) %>%
-  ggplot(aes(x = reorder(location, -total_deaths), y = total_deaths)) + geom_bar(stat = "identity") +
-  geom_text(aes(label = total_deaths), position = position_dodge(width = 0.9), 
-            vjust = -0.2, size = 3) +
-  theme_light() + labs(x = "UF", y = "Óbitos confirmados") + ggtitle("Distribuição dos óbitos") +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1),
-        plot.title = element_text(hjust = 0.5),
-        plot.margin = margin(0.2, 0.5, 0.2, 0.5, "cm")) +
-  labs(caption = "Fonte: Ministério da Saúde")
-  # annotate("text", x = 27, y = max(estados$total_deaths), 
-  #          label = "Fonte: Ministério da Saúde", hjust = 1, vjust = 1)
-
-death_dist_plot
+# death_dist_plot <- estados %>% group_by(location) %>% filter(row_number() == n()) %>%
+#   ggplot(aes(x = reorder(location, -total_deaths), y = total_deaths)) + geom_bar(stat = "identity") +
+#   geom_text(aes(label = total_deaths), position = position_dodge(width = 0.9), 
+#             vjust = -0.2, size = 2.2) +
+#   theme_light() + labs(x = "UF", y = "Óbitos confirmados") + ggtitle("Distribuição dos óbitos") +
+#   theme(axis.text.x = element_text(angle = 45, hjust = 1),
+#         plot.title = element_text(hjust = 0.5),
+#         plot.margin = margin(0.2, 0.5, 0.2, 0.5, "cm")) +
+#   labs(caption = "Fonte: Ministério da Saúde")
+#   # annotate("text", x = 27, y = max(estados$total_deaths), 
+#   #          label = "Fonte: Ministério da Saúde", hjust = 1, vjust = 1)
+# 
+# death_dist_plot
 
 death_time_data <- brasil %>% filter(location == "Brasil" & total_deaths > 0)
 
@@ -662,9 +662,9 @@ p <- estados_hora %>% group_by(date) %>%
   #ease_aes('cubic-in-out') +
   ease_aes('linear') 
 
-anim <- animate(p, duration = 30, fps = 25, end_pause = 100, 
-                width = 787, height = 500)
-anim_save("data/EstadosAnim.gif")
+# anim <- animate(p, duration = 30, fps = 25, end_pause = 100, 
+#                 width = 787, height = 500)
+# anim_save("data/EstadosAnim.gif")
 
 cfrdeaths <- full_data %>% group_by(location) %>% filter(total_deaths >= 100, row_number() == n(),
                                             !location %in% c("World", "Brasil")) %>%
