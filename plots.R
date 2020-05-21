@@ -437,7 +437,7 @@ full_data %>% filter(location == "Brazil") %>% tail
 
 full_data <- full_join(full_data, filter(brasil, location == "Brasil"))
 
-compare <- c("Brasil", "Italy", "United States", "Spain", "France",
+compare <- c("Brasil", "Italy", "United States", "Russia",
              "South Korea", "Germany", "United Kingdom")
 
 
@@ -502,7 +502,7 @@ comp_data <- full_data %>% filter(location %in% compare) %>%
 comp_plot <- ggplot(comp_data, aes(day, total_deaths)) + full_data_style +
   labs(y = "Número de Casos (log10)") +
   scale_y_continuous(breaks = world_log_brks, minor_breaks = NULL, labels = pot10) +
-  scale_x_continuous(breaks = seq(0, max(comp_data$day) + 1, by = 2),
+  scale_x_continuous(breaks = seq(0, max(comp_data$day) + 1, by = 5),
                      minor_breaks = seq(0, max(comp_data$day) + 1, by = 1),
                      expand = c(0, 1)) +
   annotate("text", x = 2, y = max(comp_data$total_deaths), 
