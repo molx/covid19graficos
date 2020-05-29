@@ -3,7 +3,8 @@ library(readxl)
 library(tidyverse)
 library(grid)
 library(ggrepel)
-library(gganimate)
+#library(gganimate)
+#Adicionei essa linha e comentei a linha de cima
 
 #git add .;git commit -m "updating data";git push
 
