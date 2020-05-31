@@ -4,7 +4,8 @@ library(tidyverse)
 library(grid)
 library(ggrepel)
 #library(gganimate)
-#Adicionei essa linha e comentei a linha de cima
+library(RColorBrewer)
+
 
 #git add .;git commit -m "updating data";git push
 
@@ -682,3 +683,32 @@ cfrdeaths %>%
   geom_smooth(method = "lm")
 
 cor(cfrdeaths$total_deaths_log, cfrdeaths$cfr)
+
+tot_order <- estados %>% filter(date == max(date)) %>% arrange(total_cases)
+estados_colors <- colorRampPalette(brewer.pal(11, "BrBG"))(27)
+
+brasil_ma <- brasil %>% filter(location == "Brasil") %>% 
+  mutate(new_deaths_ma = round(ma(new_deaths, nma)))
+
+ft_data <- estados %>% arrange(date, match(location, tot_order$location)) %>% 
+  group_by(location) %>%
+  mutate(new_cases_ma = round(ma(new_cases, nma))) %>% ungroup() %>%
+  group_by(date) %>% 
+  mutate(dt = sum(new_cases_ma), ymax = cumsum(new_cases_ma) - dt/2, ymin = ymax - new_cases_ma) %>%
+  ungroup() %>% filter(date >= as.Date("2020-03-15"))
+
+ft_data %>% tail(27)
+
+ft_data %>%
+  ggplot(aes(x = date)) + theme_bw() +
+  geom_ribbon(aes(ymin = ymin, ymax = ymax, fill = location)) +
+  scale_fill_manual(values = estados_colors)
+  
+  #scale_fill_manual(values = rainbow(27)[order(tot_order$location)])
+
+
+
+
+
+
+
