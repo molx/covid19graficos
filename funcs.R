@@ -7,8 +7,6 @@ datastyle <- list(theme_light(), #geom_line(size = 1), geom_point(),
                   labs(x = "Data", y = "Número de Casos", caption = "Fonte: Ministério da Saúde"))
 
 
-
-
 ################################
 # Ministério da saúde
 # http://plataforma.saude.gov.br/novocoronavirus/

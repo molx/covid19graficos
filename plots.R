@@ -6,6 +6,9 @@ library(ggrepel)
 #library(gganimate)
 library(RColorBrewer)
 
+library(ggpattern)
+#https://coolbutuseless.github.io/2020/04/01/introducing-ggpattern-pattern-fills-for-ggplot/
+#remotes::install_github("coolbutuseless/ggpattern")
 
 #git add .;git commit -m "updating data";git push
 
@@ -442,8 +445,6 @@ full_data <- full_join(full_data, filter(brasil, location == "Brasil"))
 compare <- c("Brasil", "Italy", "United States", "Russia",
              "South Korea", "Germany", "United Kingdom")
 
-
-
 maxday <- 25
 mindeaths <- 100
 full_data_style <- get_full_data_style(mindeaths)
@@ -684,31 +685,100 @@ cfrdeaths %>%
 
 cor(cfrdeaths$total_deaths_log, cfrdeaths$cfr)
 
+#### Ribbon plots
+
 tot_order <- estados %>% filter(date == max(date)) %>% arrange(total_cases)
 estados_colors <- colorRampPalette(brewer.pal(11, "BrBG"))(27)
-
-brasil_ma <- brasil %>% filter(location == "Brasil") %>% 
-  mutate(new_deaths_ma = round(ma(new_deaths, nma)))
 
 ft_data <- estados %>% arrange(date, match(location, tot_order$location)) %>% 
   group_by(location) %>%
   mutate(new_cases_ma = round(ma(new_cases, nma))) %>% ungroup() %>%
   group_by(date) %>% 
-  mutate(dt = sum(new_cases_ma), ymax = cumsum(new_cases_ma) - dt/2, ymin = ymax - new_cases_ma) %>%
-  ungroup() %>% filter(date >= as.Date("2020-03-15"))
+  mutate(dt = sum(new_cases_ma), ymax = cumsum(new_cases_ma) - dt/2,
+         ymin = ymax - new_cases_ma, yavg = (ymax + ymin) / 2,
+         rank = n():1) %>%
+  ungroup() %>% filter(date >= as.Date("2020-03-15")) %>%
+  right_join(siglas) %>%
+  mutate(label = if_else(date == max(date) & rank <= 10, estado, NA_character_))
 
 ft_data %>% tail(27)
 
 ft_data %>%
-  ggplot(aes(x = date)) + theme_bw() +
+  ggplot(aes(x = date)) + theme_light() +
   geom_ribbon(aes(ymin = ymin, ymax = ymax, fill = location)) +
-  scale_fill_manual(values = estados_colors)
+  scale_fill_manual(values = estados_colors) + 
+  geom_text(aes(x = max(date), y = yavg, label = label), hjust = 0, vjust = 0.5) + 
+  scale_x_date(date_breaks = "5 days", date_minor_breaks = "1 day",
+               date_labels = "%d/%m") +
+  scale_y_continuous(breaks = NULL) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1),
+        plot.title = element_text(hjust = 0.5),
+        plot.margin = margin(0.2, 0.5, 0.2, 0.5, "cm"),
+        legend.position = "none") +
+  labs(x = "Data", y = NULL,
+       caption = "Fonte: Our world in Data",
+       title = paste("Evolução do número de novos casos (média móvel,", nma, "dias)"))
+  
+  #geom_label_repel(aes(label = label, y = yavg), nudge_x = 1, na.rm = TRUE)
   
   #scale_fill_manual(values = rainbow(27)[order(tot_order$location)])
 
+compare2 <- c("Brazil", "Italy", "United States", "Russia", "Spain", "France", "India",
+             "South Korea", "Germany", "United Kingdom", "China")
 
+ftw_colors <- colorRampPalette(brewer.pal(11, "BrBG"))(length(compare2) + 1)
 
+ft_rw_data <-  full_data %>% filter(!(location %in% compare2), location != "World") %>%
+  select(-location) %>% group_by(date) %>% summarise_all(sum) %>%
+  mutate(location = "Outros Países")
 
+tot_order_world <- full_data %>% filter(location %in% compare2) %>%
+  full_join(ft_rw_data) %>% filter(date == max(date) - 1) %>%
+  arrange(new_cases)
 
+ft_world_data <- full_data %>% filter(location %in% compare2) %>%
+  full_join(ft_rw_data) %>%
+  filter(date >= as.Date("2020-02-01")) %>%
+  arrange(date, match(location, tot_order_world$location)) %>% 
+  group_by(location) %>%
+  mutate(new_cases_ma = round(ma(new_cases, nma))) %>%
+  group_by(date) %>% 
+  mutate(dt = sum(new_cases_ma), ymax = cumsum(new_cases_ma) - dt/2,
+         ymin = ymax - new_cases_ma, yavg = (ymax + ymin) / 2,
+         rank = n():1) %>%
+  ungroup() %>%
+  mutate(label = if_else(date == max(date) & rank <= 5, location, NA_character_)) %>%
+  arrange(date) %>%
+  replace_na(list(new_cases = 0))
 
+ft_world_data %>% tail(30)
+
+ft_world_plot <- ft_world_data %>%
+  ggplot(aes(x = date)) + theme_bw() +
+  geom_ribbon(aes(ymin = ymin, ymax = ymax, fill = location)) +
+  scale_fill_manual(values = ftw_colors) + 
+  #geom_text(aes(x = max(date), y = yavg, label = label), hjust = 0, vjust = 0.5) + 
+  scale_x_date(date_breaks = "5 days", date_minor_breaks = "5 day",
+               date_labels = "%d/%m") +
+  scale_y_continuous(breaks = NULL) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1),
+        plot.title = element_text(hjust = 0.5),
+        plot.title.position = "plot",
+        plot.margin = margin(0.2, 0.5, 0.2, 0.5, "cm"),
+        plot.caption.position = "plot"
+        ) +
+  labs(x = "Data", y = NULL,
+       caption = "Fonte: Our world in Data",
+       title = paste("Evolução do número de novos casos (média móvel dos últimos", nma, "dias)"),
+       fill = NULL)
+
+ft_world_plot
+
+ggsave(paste0("data/Evolução Obitos Mundo.png"), plot = ft_world_plot,
+       device = png(),
+       width = 20,
+       height = 10,
+       units = "cm",
+       dpi = 100)
+dev.off()
 
