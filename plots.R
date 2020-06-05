@@ -15,6 +15,8 @@ library(ggpattern)
 source("fetch-ms-data.R", encoding = "utf8")
 source("funcs.R", encoding = "utf8")
 
+options(scipen = 7)
+
 get_full_data_style <- function(mindeaths, group = "País") {
   list(theme_light(),
        geom_line(aes(group = location, colour = location), size = 1),
@@ -255,7 +257,8 @@ brasil_ma <- brasil %>% filter(location == "Brasil") %>%
 br_ma_xlim = brasil_ma$date[which(brasil_ma$new_deaths_ma > 0)[1]]
 
 brasil_ma_plot <- ggplot(brasil_ma, aes(x = date, y = new_deaths_ma)) + theme_light() +
-  geom_bar(stat = "identity", aes(x = date, y = new_deaths_ma)) +
+  geom_bar(stat = "identity", aes(x = date, y = new_deaths_ma), 
+           width = 0.5, position = position_dodge(width = 0.5)) +
   #geom_step(size = 1, direction = "mid" ) +
   scale_y_continuous(limits = c(NA, max(brasil_ma$new_deaths_ma, na.rm = TRUE) * 1.20)) +
   scale_x_date(date_breaks = "5 days", date_minor_breaks = "1 day",
@@ -297,7 +300,7 @@ for (uf in "Brasil") {
   p1
   tot_range_new <- seq(min(ts$new_deaths), max(ts$new_deaths))
   p2 <- ggplot(ts, aes(x = date, y = new_deaths)) + datastyle +
-    geom_bar(stat = "identity") +
+    geom_bar(stat = "identity", width = 0.5, position = position_dodge(width = 0.5)) +
     scale_x_date(limits = c(min(filter(ts, total_deaths > 0)$date), NA),
                  date_breaks = "5 days", date_minor_breaks = "1 day",
                  date_labels = "%d/%m") +
@@ -503,14 +506,15 @@ comp_data <- full_data %>% filter(location %in% compare) %>%
   mutate(total_deaths = log10(total_deaths)) 
 
 comp_plot <- ggplot(comp_data, aes(day, total_deaths)) + full_data_style +
-  labs(y = "Número de Casos (log10)") +
+  labs(y = "Número de Casos (log10)",
+       caption = "Fontes: https://ourworldindata.org/coronavirus\nMinistério da Saúde") +
   scale_y_continuous(breaks = world_log_brks, minor_breaks = NULL, labels = pot10) +
   scale_x_continuous(breaks = seq(0, max(comp_data$day) + 1, by = 5),
                      minor_breaks = seq(0, max(comp_data$day) + 1, by = 1),
-                     expand = c(0, 1)) +
-  annotate("text", x = 2, y = max(comp_data$total_deaths), 
-           label = "Fontes: https://ourworldindata.org/coronavirus\nMinistério da Saúde",
-           hjust = 0, vjust = 0.5)
+                     expand = c(0, 1)) 
+  # annotate("text", x = 2, y = max(comp_data$total_deaths), 
+  #          label = "Fontes: https://ourworldindata.org/coronavirus\nMinistério da Saúde",
+  #          hjust = 0, vjust = 0.5)
 
 comp_plot
 
