@@ -4,7 +4,7 @@ datastyle <- list(theme_light(), #geom_line(size = 1), geom_point(),
                   theme(axis.text.x = element_text(angle = 45, hjust = 1),
                         plot.title = element_text(hjust = 0.5),
                         plot.margin = margin(0.2, 0.5, 0.2, 0.5, "cm")),
-                  labs(x = "Data", y = "Número de Casos", caption = "Fonte: Ministério da Saúde"))
+                  labs(x = "Data", y = "Número de Casos", caption = "Brasil.io"))
 
 
 ################################

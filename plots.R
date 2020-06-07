@@ -12,8 +12,12 @@ library(ggpattern)
 
 #git add .;git commit -m "updating data";git push
 
-source("fetch-ms-data.R", encoding = "utf8")
+#source("fetch-ms-data.R", encoding = "utf8")
+#Since 06/06 using brio data
+source("fetch-brio-data.R", encoding = "utf8")
 source("funcs.R", encoding = "utf8")
+
+datasource <- "Fonte: Brasil.io"
 
 options(scipen = 7)
 
@@ -21,7 +25,7 @@ get_full_data_style <- function(mindeaths, group = "País") {
   list(theme_light(),
        geom_line(aes(group = location, colour = location), size = 1),
        geom_label_repel(aes(label = label), nudge_x = 1, na.rm = TRUE),
-       labs(x = "Dia", y = "Número de Casos", colour = group, caption = "Fonte: Ministério da Saúde"),
+       labs(x = "Dia", y = "Número de Casos", colour = group, caption = datasource),
        ggtitle(paste("Óbitos após o", mindeaths, "º óbito")),
        theme(plot.title = element_text(hjust = 0.5),
              plot.margin = margin(0.2, 0.5, 0.2, 0.5, "cm")),
@@ -42,20 +46,22 @@ get_full_data_style <- function(mindeaths, group = "País") {
 #   mutate(Date = as.Date(Date, format = "%m/%d/%y"), New = Cases - lag(Cases)) %>%
 #   tail(-29)
 
-casos <- read_excel("data/Brasil.xlsx", sheet = "Confirmados") %>%
-  mutate(Data = as.Date(Data)) %>% rename(date = Data) %>%
-  pivot_longer(-date, names_to = "location", values_to = "total_cases")
+# casos <- read_excel("data/Brasil.xlsx", sheet = "Confirmados") %>%
+#   mutate(Data = as.Date(Data)) %>% rename(date = Data) %>%
+#   pivot_longer(-date, names_to = "location", values_to = "total_cases")
+# 
+# write_excel_csv(read_excel("data/Brasil.xlsx", sheet = "Confirmados"), path = "data/estados_wide.csv")
+# 
+# mortes <- read_excel("data/Brasil.xlsx", sheet = "Mortes") %>%
+#   mutate(Data = as.Date(Data)) %>% rename(date = Data) %>%
+#   pivot_longer(-date, names_to = "location", values_to = "total_deaths")
+# 
+# estados <- full_join(casos, mortes) %>% group_by(location) %>%
+#   mutate(new_cases = calc_new(total_cases),
+#          new_deaths = calc_new(total_deaths)) %>%
+#   mutate_if(is.numeric, na_to_zero)
 
-write_excel_csv(read_excel("data/Brasil.xlsx", sheet = "Confirmados"), path = "data/estados_wide.csv")
-
-mortes <- read_excel("data/Brasil.xlsx", sheet = "Mortes") %>%
-  mutate(Data = as.Date(Data)) %>% rename(date = Data) %>%
-  pivot_longer(-date, names_to = "location", values_to = "total_deaths")
-
-estados <- full_join(casos, mortes) %>% group_by(location) %>%
-  mutate(new_cases = calc_new(total_cases),
-         new_deaths = calc_new(total_deaths)) %>%
-  mutate_if(is.numeric, na_to_zero)
+estados <- brio
 
 estados %>% filter(location == "São Paulo") %>% tail
 
@@ -268,7 +274,7 @@ brasil_ma_plot <- ggplot(brasil_ma, aes(x = date, y = new_deaths_ma)) + theme_li
         plot.margin = margin(0.2, 0.5, 0.2, 0.5, "cm")) +
   labs(x = "Data", y = "Média móvel de novos óbitos") +
   ggtitle(paste("Novos Óbitos - Brasil (média móvel,", nma, "dias)")) + 
-  labs(caption = "Fonte: Ministério da Saúde")
+  labs(caption = datasource)
 
 brasil_ma_plot
 
@@ -308,7 +314,7 @@ for (uf in "Brasil") {
                        limits = c(min(tot_range_new), max(tot_range_new) * 1.20)) +
     ggtitle(paste("Novos Óbitos -", uf)) +
     annotate("text", x = ts$date[1], y = max(ts$new_deaths) * 1.01,
-             label = "Fonte: Ministério da Saúde", hjust = 0, vjust = 0) +
+             label = datasource, hjust = 0, vjust = 0) +
     annotate("text", x = max(ts$date), y = last(ts$new_deaths),
              label = last(ts$new_deaths), hjust = 0.2, vjust = -0.2)
   p2
@@ -337,9 +343,9 @@ distplot <- estados %>% group_by(location) %>% filter(row_number() == n()) %>%
   theme(axis.text.x = element_text(angle = 45, hjust = 1),
         plot.title = element_text(hjust = 0.5),
         plot.margin = margin(0.2, 0.5, 0.2, 0.5, "cm")) +
-  labs(caption = "Fonte: Ministério da Saúde")
+  labs(caption = datasource)
   # annotate("text", x = 27, y = max(estados$total_deaths), 
-  #          label = "Fonte: Ministério da Saúde", hjust = 1, vjust = 1) 
+  #          label = datasource, hjust = 1, vjust = 1) 
 
 distplot
 
@@ -373,7 +379,7 @@ cph_plot <- obitos_confirmados %>% filter(Estado != "Brasil") %>%
   theme(axis.text.x = element_text(angle = 45, hjust = 1),
         plot.title = element_text(hjust = 0.5),
         plot.margin = margin(0.2, 0.5, 0.2, 0.5, "cm")) +
-  labs(caption = "Fonte: Ministério da Saúde\nIBGE (2019)") +
+  labs(caption = paste0(datasource, "\nIBGE (2019)")) +
   # annotate("text", x = 25, y = max(obitos_confirmados$Obitos),
   #          label = "Fontes: Ministério da Saúde\nIBGE", hjust = 1, vjust = 1) +
   geom_hline(yintercept = casos_por_hab_br, linetype = "dashed") +
@@ -413,13 +419,13 @@ estado_comp_plot <- ggplot(estado_comp, aes(day, total_deaths)) +
 
 estado_comp_plot
 
-ggsave(paste0("data/Comparação Estados.png"), plot = estado_comp_plot,
-       device = png(),
-       width = 20,
-       height = 10,
-       units = "cm",
-       dpi = 100)
-dev.off()
+# ggsave(paste0("data/Comparação Estados.png"), plot = estado_comp_plot,
+#        device = png(),
+#        width = 20,
+#        height = 10,
+#        units = "cm",
+#        dpi = 100)
+# dev.off()
 
 #########
 
@@ -439,13 +445,14 @@ dbl_time <- full_data %>% filter(total_deaths >= 100) %>%
 
 write_excel_csv(dbl_time, "data/dbl_time.csv")
 
-source("fetch-ms-data.R", encoding = "utf8")
+#source("fetch-ms-data.R", encoding = "utf8")
+source("export-data.R", encoding = "utf8")
 
-full_data %>% filter(location == "Brazil") %>% tail
+# full_data %>% filter(location == "Brazil") %>% tail
+# 
+# full_data <- full_join(full_data, filter(brasil, location == "Brasil"))
 
-full_data <- full_join(full_data, filter(brasil, location == "Brasil"))
-
-compare <- c("Brasil", "Italy", "United States", "Russia",
+compare <- c("Brazil", "Italy", "United States", "Russia",
              "South Korea", "Germany", "United Kingdom")
 
 maxday <- 25
@@ -460,7 +467,7 @@ lin_data <- full_data %>% filter(location %in% compare) %>%
 
 lin_plot <- ggplot(lin_data, aes(day, total_deaths)) + 
   full_data_style +
-  labs(caption="Fontes: Our World in Data\nMinistério da Saúde")
+  labs(caption = "Fontes: Our World in Data")
   # annotate("text", x = 1, y = max(lin_data$total_deaths), 
   #          label = "Fontes: https://ourworldindata.org/coronavirus\nMinistério da Saúde",
   #          hjust = 0, vjust = 0.5)
@@ -507,7 +514,7 @@ comp_data <- full_data %>% filter(location %in% compare) %>%
 
 comp_plot <- ggplot(comp_data, aes(day, total_deaths)) + full_data_style +
   labs(y = "Número de Casos (log10)",
-       caption = "Fontes: https://ourworldindata.org/coronavirus\nMinistério da Saúde") +
+       caption = "Fontes: https://ourworldindata.org/coronavirus") +
   scale_y_continuous(breaks = world_log_brks, minor_breaks = NULL, labels = pot10) +
   scale_x_continuous(breaks = seq(0, max(comp_data$day) + 1, by = 5),
                      minor_breaks = seq(0, max(comp_data$day) + 1, by = 1),
@@ -537,9 +544,9 @@ dev.off()
 #   theme(axis.text.x = element_text(angle = 45, hjust = 1),
 #         plot.title = element_text(hjust = 0.5),
 #         plot.margin = margin(0.2, 0.5, 0.2, 0.5, "cm")) +
-#   labs(caption = "Fonte: Ministério da Saúde")
+#   labs(caption = datasource)
 #   # annotate("text", x = 27, y = max(estados$total_deaths), 
-#   #          label = "Fonte: Ministério da Saúde", hjust = 1, vjust = 1)
+#   #          label = datasource, hjust = 1, vjust = 1)
 # 
 # death_dist_plot
 
@@ -552,7 +559,7 @@ death_time_plot <- death_time_data %>%
   ggtitle("Óbitos - Brasil") + 
   labs(y = "Óbitos") +
   # annotate("text", x = death_time_data$date[1], y = max(death_time_data$total_deaths) * 1.01, 
-  #          label = "Fonte: Ministério da Saúde", hjust = 0, vjust = 0) +
+  #          label = datasource, hjust = 0, vjust = 0) +
   annotate("text", x = max(death_time_data$date), y = last(death_time_data$total_deaths), 
            label = max(death_time_data$total_deaths), hjust = 1.1)
 
@@ -592,7 +599,7 @@ death_comp_plot <- death_comp %>%
   annotate("text", x = nrow(death_comp) + 0.5, y = avg_death,
            label = paste("Média:", avg_death * 100, "%"), 
            hjust = 1, vjust = -0.25) +
-  labs(caption = "Fonte: Ministério da Saúde")
+  labs(caption = datasource)
   # annotate("text", x = nrow(death_comp) + 0.5, y = max(death_comp$death_ratio), 
   #          label = "Fontes: https://ourworldindata.org/coronavirus\nMinistério da Saúde", 
   #          hjust = 1, vjust = 1) 
@@ -627,19 +634,19 @@ dev.off()
 
 #Bar Chart Race
 
-estados_hora <- estados %>% mutate(date = as.POSIXct(date)) %>% group_by(date, location) %>% 
-  do({
-    dia <- .
-    ref_row <- dia %>% slice(n())
-    hours_rows <- tibble(date = seq(ref_row$date, by = "hour", length.out = 24),
-                         location = ref_row$location,
-                         total_cases = round(seq(from = ref_row$total_cases - ref_row$new_cases,
-                                           to = ref_row$total_cases,
-                                           length.out = 24), 0))
-    estados <- hours_rows
-  })
-  
-estados_hora %>% filter(location == "Distrito Federal") %>% tail(50)
+# estados_hora <- estados %>% mutate(date = as.POSIXct(date)) %>% group_by(date, location) %>% 
+#   do({
+#     dia <- .
+#     ref_row <- dia %>% slice(n())
+#     hours_rows <- tibble(date = seq(ref_row$date, by = "hour", length.out = 24),
+#                          location = ref_row$location,
+#                          total_cases = round(seq(from = ref_row$total_cases - ref_row$new_cases,
+#                                            to = ref_row$total_cases,
+#                                            length.out = 24), 0))
+#     estados <- hours_rows
+#   })
+#   
+# estados_hora %>% filter(location == "Distrito Federal") %>% tail(50)
   
 
 # p <- estados_hora %>% group_by(date) %>%
@@ -664,7 +671,7 @@ estados_hora %>% filter(location == "Distrito Federal") %>% tail(50)
 #   labs(x = "",
 #        title = "Casos confirmados por UF",
 #        subtitle = "Casos confirmados em {format(frame_time, format = '%d/%m/%Y')}",
-#        caption = "Fonte: Ministério da Saúde") +
+#        caption = datasource) +
 #   scale_fill_manual(name = 'UF', values = rainbow(27)) +
 #   #ease_aes('cubic-in-out') +
 #   ease_aes('linear') 
