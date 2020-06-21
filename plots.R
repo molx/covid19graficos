@@ -578,16 +578,18 @@ avg_death <- full_data %>% filter(total_deaths >= 20) %>%
   group_by(location) %>% slice(n()) %>%
   `$`("death_ratio") %>% mean %>% round(4)
 
-compare2 <- c("Brasil", "Italy", "United States", "Spain", "France",
-              "South Korea", "Germany", "United Kingdom", "China")
+compare2 <- c("Brazil", "Italy", "United States", "Spain", "France",
+              "South Korea", "Germany", "United Kingdom", "China", "Russia", "Mexico")
 
 death_comp <- full_data %>%
   filter(location %in% compare2) %>%
-  mutate(death_ratio = total_deaths / total_cases) %>%
+  mutate(death_ratio = total_deaths / total_cases,
+         location = paises[match(location, names(paises))]) %>%
   group_by(location) %>% slice(n())
 
 death_comp_plot <- death_comp %>%
-  ggplot(aes(x = reorder(location, -death_ratio), y = death_ratio)) + geom_bar(stat = "identity") +
+  ggplot(aes(x = reorder(location, -death_ratio), y = death_ratio)) + 
+  geom_bar(stat = "identity") +
   geom_hline(yintercept = avg_death, linetype = "dashed") +
   geom_text(aes(label = paste0(round(death_ratio * 100, 2), "%")) , position = position_dodge(width = 0.9), 
             vjust = -0.2, size = 3) +
@@ -735,7 +737,7 @@ ft_data %>%
   #scale_fill_manual(values = rainbow(27)[order(tot_order$location)])
 
 compare2 <- c("Brazil", "Italy", "United States", "Russia", "Spain", "France", "India",
-             "South Korea", "Germany", "United Kingdom", "China")
+             "South Korea", "Germany", "United Kingdom", "China", "Mexico", "Pakistan", "Chile")
 
 ftw_colors <- colorRampPalette(brewer.pal(11, "BrBG"))(length(compare2) + 1)
 
@@ -754,13 +756,14 @@ ft_world_data <- full_data %>% filter(location %in% compare2) %>%
   group_by(location) %>%
   mutate(new_cases_ma = round(ma(new_cases, nma))) %>%
   group_by(date) %>% 
-  mutate(dt = sum(new_cases_ma), ymax = cumsum(new_cases_ma) - dt/2,
+  mutate(dt = sum(new_cases_ma, na.rm = TRUE), ymax = cumsum(new_cases_ma) - dt/2,
          ymin = ymax - new_cases_ma, yavg = (ymax + ymin) / 2,
          rank = n():1) %>%
   ungroup() %>%
   mutate(label = if_else(date == max(date) & rank <= 5, location, NA_character_)) %>%
   arrange(date) %>%
-  replace_na(list(new_cases = 0))
+  replace_na(list(new_cases = 0)) %>%
+  mutate(location = paises[match(location, names(paises))])
 
 ft_world_data %>% tail(30)
 
@@ -776,7 +779,9 @@ ft_world_plot <- ft_world_data %>%
         plot.title = element_text(hjust = 0.5),
         plot.title.position = "plot",
         plot.margin = margin(0.2, 0.5, 0.2, 0.5, "cm"),
-        plot.caption.position = "plot"
+        plot.caption.position = "plot",
+        legend.text = element_text(size = rel(0.8)),
+        legend.key.size = unit(0.45, "cm")
         ) +
   labs(x = "Data", y = NULL,
        caption = "Fonte: Our world in Data",
