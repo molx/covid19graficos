@@ -27,7 +27,7 @@ siglas <- c(AC = "Acre",
             TO = "Tocantins") %>% enframe("estado", "location")
 
 paises = c(Brazil = "Brasil",
-           `United States` = "Estados Unidos",
+           `United States` = "EUA",
            Spain = "Espanha",
            China = "China",
            Italy = "Itália",
@@ -39,5 +39,6 @@ paises = c(Brazil = "Brasil",
            Mexico = "México",
            India = "Índia",
            `Outros Países` = "Outros Países",
+           `Outros` = "Outros",
            Pakistan = "Paquistão",
            Chile = "Chile")

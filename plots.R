@@ -742,8 +742,8 @@ compare2 <- c("Brazil", "Italy", "United States", "Russia", "Spain", "France", "
 ftw_colors <- colorRampPalette(brewer.pal(11, "BrBG"))(length(compare2) + 1)
 
 ft_rw_data <-  full_data %>% filter(!(location %in% compare2), location != "World") %>%
-  select(-location) %>% group_by(date) %>% summarise_all(sum) %>%
-  mutate(location = "Outros Países")
+  select(-location) %>% group_by(date) %>% summarise_all(sum, na.rm = TRUE) %>%
+  mutate(location = "Outros")
 
 tot_order_world <- full_data %>% filter(location %in% compare2) %>%
   full_join(ft_rw_data) %>% filter(date == max(date) - 1) %>%
@@ -756,24 +756,28 @@ ft_world_data <- full_data %>% filter(location %in% compare2) %>%
   group_by(location) %>%
   mutate(new_cases_ma = round(ma(new_cases, nma))) %>%
   group_by(date) %>% 
-  mutate(dt = sum(new_cases_ma, na.rm = TRUE), ymax = cumsum(new_cases_ma) - dt/2,
+  mutate(dt = sum(new_cases_ma, na.rm = TRUE), ymax = cumsum(replace_na(new_cases_ma, 0)) - dt/2,
          ymin = ymax - new_cases_ma, yavg = (ymax + ymin) / 2,
          rank = n():1) %>%
   ungroup() %>%
+  mutate(location = paises[match(location, names(paises))]) %>%
   mutate(label = if_else(date == max(date) & rank <= 5, location, NA_character_)) %>%
   arrange(date) %>%
-  replace_na(list(new_cases = 0)) %>%
-  mutate(location = paises[match(location, names(paises))])
+  replace_na(list(new_cases = 0))
+  
 
 ft_world_data %>% tail(30)
+
+maxdate = max(ft_world_data$date) + diff(range(ft_world_data$date)) * 0.05
 
 ft_world_plot <- ft_world_data %>%
   ggplot(aes(x = date)) + theme_bw() +
   geom_ribbon(aes(ymin = ymin, ymax = ymax, fill = location)) +
   scale_fill_manual(values = ftw_colors) + 
-  #geom_text(aes(x = max(date), y = yavg, label = label), hjust = 0, vjust = 0.5) + 
+  geom_text(aes(x = max(date), y = yavg, label = label), hjust = 0, vjust = 0.5) + 
   scale_x_date(date_breaks = "5 days", date_minor_breaks = "5 day",
-               date_labels = "%d/%m") +
+               date_labels = "%d/%m", limits = c(min(ft_world_data$date) + 7, NA), 
+               expand = expansion(mult = c(0.01, 0.08))) +
   scale_y_continuous(breaks = NULL) +
   theme(axis.text.x = element_text(angle = 45, hjust = 1),
         plot.title = element_text(hjust = 0.5),
