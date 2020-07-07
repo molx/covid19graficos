@@ -737,7 +737,7 @@ ft_data %>%
   #scale_fill_manual(values = rainbow(27)[order(tot_order$location)])
 
 compare2 <- c("Brazil", "Italy", "United States", "Russia", "Spain", "France", "India",
-             "South Korea", "Germany", "United Kingdom", "China", "Mexico", "Pakistan", "Chile")
+             "South Africa", "Germany", "United Kingdom", "China", "Mexico", "Peru", "Chile")
 
 ftw_colors <- colorRampPalette(brewer.pal(11, "BrBG"))(length(compare2) + 1)
 
@@ -768,8 +768,6 @@ ft_world_data <- full_data %>% filter(location %in% compare2) %>%
 
 ft_world_data %>% tail(30)
 
-maxdate = max(ft_world_data$date) + diff(range(ft_world_data$date)) * 0.05
-
 ft_world_plot <- ft_world_data %>%
   ggplot(aes(x = date)) + theme_bw() +
   geom_ribbon(aes(ymin = ymin, ymax = ymax, fill = location)) +
@@ -777,7 +775,7 @@ ft_world_plot <- ft_world_data %>%
   geom_text(aes(x = max(date), y = yavg, label = label), hjust = 0, vjust = 0.5) + 
   scale_x_date(date_breaks = "5 days", date_minor_breaks = "5 day",
                date_labels = "%d/%m", limits = c(min(ft_world_data$date) + 7, NA), 
-               expand = expansion(mult = c(0.01, 0.08))) +
+               expand = expansion(mult = c(0.01, 0.16))) +
   scale_y_continuous(breaks = NULL) +
   theme(axis.text.x = element_text(angle = 45, hjust = 1),
         plot.title = element_text(hjust = 0.5),
