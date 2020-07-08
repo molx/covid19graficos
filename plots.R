@@ -104,7 +104,7 @@ ablines <- lapply(1:7, function(dbl_time) {
 #   geom_abline(linetype = i, slope = slopes[i], intercept = intcpt)
 # })
 
-br_log_brks <- unlist(lapply(0:5, function(i) log10(c(1*10^i, 2*10^i, 5*10^i))))
+br_log_brks <- unlist(lapply(0:6, function(i) log10(c(1*10^i, 2*10^i, 5*10^i))))
 
 brasil_log_plot + theme_light() + #datastyle + # ablines + 
   theme(axis.text.x = element_text(angle = 45, hjust = 1), plot.title = element_text(hjust = 0.5)) +
@@ -155,14 +155,15 @@ brasil_log_plot + theme_light() + #datastyle + # ablines +
 brasil_log_plot + theme_light() + #datastyle + # ablines + 
   theme(axis.text.x = element_text(angle = 45, hjust = 1), plot.title = element_text(hjust = 0.5)) +
   scale_x_continuous(limits = c(0, nrow(brasil_log_data) + est_pred_interval),
-                     breaks = seq(1, nrow(brasil_log_data) + est_pred_interval), 
+                     breaks = seq(1, nrow(brasil_log_data) + est_pred_interval, 7) + 1, 
                      minor_breaks = NULL,
-                     labels = format(seq(brasil_log_data$date[1], by = "days", 
-                                         length.out = nrow(brasil_log_data) + est_pred_interval),
+                     labels = format(seq(brasil_log_data$date[1], 
+                                         brasil_log_data$date[1] + nrow(brasil_log_data) + est_pred_interval,
+                                         by = "7 days"),
                                      format = "%d/%m")) +
   scale_y_continuous(limits = c(0, NA), breaks = br_log_brks, labels = pot10l,
                      minor_breaks = NULL) +
-  coord_cartesian(ylim = c(0, 4)) +
+  coord_cartesian(ylim = c(0, 5)) +
   labs(x = "Data", y = "Óbitos (log)") +
   ggtitle("Comparação da taxa de crescimento em função das medidas de isolamento") +
   # geom_smooth(data = tail(brasil_log_data, nrow(brasil_log_data) - 8), method = "lm",
@@ -170,45 +171,67 @@ brasil_log_plot + theme_light() + #datastyle + # ablines +
   geom_vline(xintercept = 2, linetype = "6a") + 
   geom_smooth(data = brasil_log_data[5:9,], method = "lm", se = FALSE,
               fullrange = TRUE, level = 0.95, formula = y ~ x, size = 0.5, linetype = "f4") +
-  geom_vline(xintercept = 9, linetype = "6a") + 
+  #geom_vline(xintercept = 9, linetype = "6a") + 
   geom_smooth(data = brasil_log_data[10:16,], method = "lm", se = FALSE,
               fullrange = TRUE, level = 0.95, formula = y ~ x, size = 0.5, linetype = "f4") +
-  geom_vline(xintercept = 16, linetype = "6a") + 
+  #geom_vline(xintercept = 16, linetype = "6a") + 
   geom_smooth(data = brasil_log_data[17:23,], method = "lm", se = FALSE,
               fullrange = TRUE, level = 0.95, formula = y ~ x, size = 0.5, linetype = "f4") +
-  geom_vline(xintercept = 23, linetype = "6a") + 
+  #geom_vline(xintercept = 23, linetype = "6a") + 
   geom_smooth(data = brasil_log_data[24:30,], method = "lm", se = FALSE,
               fullrange = TRUE, level = 0.95, formula = y ~ x, size = 0.5, linetype = "f4") +
-  geom_vline(xintercept = 30, linetype = "6a") + 
+  #geom_vline(xintercept = 30, linetype = "6a") + 
   geom_smooth(data = brasil_log_data[31:37,], method = "lm", se = FALSE,
               fullrange = TRUE, level = 0.95, formula = y ~ x, size = 0.5, linetype = "f4") +
-  geom_vline(xintercept = 37, linetype = "6a") + 
+  #geom_vline(xintercept = 37, linetype = "6a") + 
   geom_smooth(data = brasil_log_data[38:44,], method = "lm", se = FALSE,
               fullrange = TRUE, level = 0.95, formula = y ~ x, size = 0.5, linetype = "f4") +
-  geom_vline(xintercept = 44, linetype = "6a") + 
+  #geom_vline(xintercept = 44, linetype = "6a") + 
   geom_smooth(data = brasil_log_data[45:51,], method = "lm", se = FALSE,
               fullrange = TRUE, level = 0.95, formula = y ~ x, size = 0.5, linetype = "f4") +
-  geom_vline(xintercept = 44, linetype = "6a") + 
+  #geom_vline(xintercept = 44, linetype = "6a") + 
   geom_smooth(data = brasil_log_data[52:57,], method = "lm", se = FALSE,
               fullrange = TRUE, level = 0.95, formula = y ~ x, size = 0.5, linetype = "f4") +
-  geom_vline(xintercept = 51, linetype = "6a") + 
-  geom_point(data = brasil_log_data, aes(x = time, y = total_deaths)) +
-  annotate("text", x = 2, y = 3, label = "Início das medidas\nde isolamento (SP)",
-           hjust = -0.05) +
-  annotate("text", x = 9, y = 1, label = "Medidas de isolamento\n+7 dias (SP)",
-           hjust = -0.05) +
-  annotate("text", x = 16, y = 1, label = "+14 dias",
-          hjust = -0.05) +
-  annotate("text", x = 23, y = 1, label = "+21 dias",
-           hjust = -0.05) +
-  annotate("text", x = 30, y = 1, label = "+28 dias",
-           hjust = -0.05) +
-  annotate("text", x = 37, y = 1, label = "+35 dias",
-           hjust = -0.05) +
-  annotate("text", x = 44, y = 1, label = "+42 dias",
-           hjust = -0.05) +
-  annotate("text", x = 51, y = 1, label = "+48 dias",
-           hjust = -0.05)
+  geom_smooth(data = brasil_log_data[58:64,], method = "lm", se = FALSE,
+              fullrange = TRUE, level = 0.95, formula = y ~ x, size = 0.5, linetype = "f4") +
+  geom_smooth(data = brasil_log_data[65:71,], method = "lm", se = FALSE,
+              fullrange = TRUE, level = 0.95, formula = y ~ x, size = 0.5, linetype = "f4") +
+  geom_smooth(data = brasil_log_data[72:78,], method = "lm", se = FALSE,
+              fullrange = TRUE, level = 0.95, formula = y ~ x, size = 0.5, linetype = "f4") +
+  geom_smooth(data = brasil_log_data[79:85,], method = "lm", se = FALSE,
+              fullrange = TRUE, level = 0.95, formula = y ~ x, size = 0.5, linetype = "f4") +
+  geom_smooth(data = brasil_log_data[86:92,], method = "lm", se = FALSE,
+              fullrange = TRUE, level = 0.95, formula = y ~ x, size = 0.5, linetype = "f4") +
+  geom_smooth(data = brasil_log_data[93:99,], method = "lm", se = FALSE,
+              fullrange = TRUE, level = 0.95, formula = y ~ x, size = 0.5, linetype = "f4") +
+  geom_smooth(data = brasil_log_data[100:106,], method = "lm", se = FALSE,
+              fullrange = TRUE, level = 0.95, formula = y ~ x, size = 0.5, linetype = "f4") +
+  geom_smooth(data = brasil_log_data[107:113,], method = "lm", se = FALSE,
+              fullrange = TRUE, level = 0.95, formula = y ~ x, size = 0.5, linetype = "f4") +
+  geom_smooth(data = brasil_log_data[114:120,], method = "lm", se = FALSE,
+              fullrange = TRUE, level = 0.95, formula = y ~ x, size = 0.5, linetype = "f4") +
+  geom_smooth(data = brasil_log_data[121:127,], method = "lm", se = FALSE,
+              fullrange = TRUE, level = 0.95, formula = y ~ x, size = 0.5, linetype = "f4") 
+  
+  
+  #geom_vline(xintercept = 51, linetype = "6a") + 
+  #geom_point(data = brasil_log_data, aes(x = time, y = total_deaths)) 
+  # annotate("text", x = 2, y = 3, label = "Início das medidas\nde isolamento (SP)",
+  #          hjust = -0.05) +
+  # annotate("text", x = 9, y = 1, label = "Medidas de isolamento\n+7 dias (SP)",
+  #          hjust = -0.05) +
+  # annotate("text", x = 16, y = 1, label = "+14 dias",
+  #         hjust = -0.05) +
+  # annotate("text", x = 23, y = 1, label = "+21 dias",
+  #          hjust = -0.05) +
+  # annotate("text", x = 30, y = 1, label = "+28 dias",
+  #          hjust = -0.05) +
+  # annotate("text", x = 37, y = 1, label = "+35 dias",
+  #          hjust = -0.05) +
+  # annotate("text", x = 44, y = 1, label = "+42 dias",
+  #          hjust = -0.05) +
+  # annotate("text", x = 51, y = 1, label = "+48 dias",
+  #          hjust = -0.05)
   # geom_vline(xintercept = 10, linetype = "6a") +
   # annotate("text", x = 10, y = 2.3, label = "Pronunciamento Bolsonaro",
   #          hjust = -0.05) 
@@ -251,7 +274,8 @@ brasil_dbl_plot <- brasil_dbl_time %>%
   ggplot(aes(x = date, y = dbl_time)) + theme_light() + datastyle +
   geom_ribbon(aes(ymin = dbl_time_lwr, ymax = dbl_time_upr), fill = "grey70", alpha = 0.5) +
   geom_line() + geom_point() + ggtitle("Tempo de duplicação") +
-  scale_y_continuous(breaks = 1:15, labels = 1:15) +
+  scale_y_continuous(breaks = seq(0, 100, 10), labels = seq(0, 100, 10),
+                     minor_breaks = seq(0, 100, 1)) +
   labs(x = "Data", y = "Tempo de duplicação (dias)")
   
 brasil_dbl_plot
@@ -266,8 +290,9 @@ brasil_ma_plot <- ggplot(brasil_ma, aes(x = date, y = new_deaths_ma)) + theme_li
   geom_bar(stat = "identity", aes(x = date, y = new_deaths_ma), 
            width = 0.5, position = position_dodge(width = 0.5)) +
   #geom_step(size = 1, direction = "mid" ) +
-  scale_y_continuous(limits = c(NA, max(brasil_ma$new_deaths_ma, na.rm = TRUE) * 1.20)) +
-  scale_x_date(date_breaks = "5 days", date_minor_breaks = "1 day",
+  scale_y_continuous(limits = c(NA, max(brasil_ma$new_deaths_ma, na.rm = TRUE) * 1.20),
+                     breaks = seq(0, 1250, 250)) +
+  scale_x_date(date_breaks = "7 days", date_minor_breaks = "1 day",
              date_labels = "%d/%m", limits = c(br_ma_xlim, NA)) +
   theme(axis.text.x = element_text(angle = 45, hjust = 1),
         plot.title = element_text(hjust = 0.5),
@@ -308,7 +333,7 @@ for (uf in "Brasil") {
   p2 <- ggplot(ts, aes(x = date, y = new_deaths)) + datastyle +
     geom_bar(stat = "identity", width = 0.5, position = position_dodge(width = 0.5)) +
     scale_x_date(limits = c(min(filter(ts, total_deaths > 0)$date), NA),
-                 date_breaks = "5 days", date_minor_breaks = "1 day",
+                 date_breaks = "7 days", date_minor_breaks = "1 day",
                  date_labels = "%d/%m") +
     scale_y_continuous(breaks = pretty(tot_range_new),
                        limits = c(min(tot_range_new), max(tot_range_new) * 1.20)) +
@@ -721,7 +746,7 @@ ft_data %>%
   geom_ribbon(aes(ymin = ymin, ymax = ymax, fill = location)) +
   scale_fill_manual(values = estados_colors) + 
   geom_text(aes(x = max(date), y = yavg, label = label), hjust = 0, vjust = 0.5) + 
-  scale_x_date(date_breaks = "5 days", date_minor_breaks = "1 day",
+  scale_x_date(date_breaks = "7 days", date_minor_breaks = "1 day",
                date_labels = "%d/%m") +
   scale_y_continuous(breaks = NULL) +
   theme(axis.text.x = element_text(angle = 45, hjust = 1),
@@ -773,7 +798,7 @@ ft_world_plot <- ft_world_data %>%
   geom_ribbon(aes(ymin = ymin, ymax = ymax, fill = location)) +
   scale_fill_manual(values = ftw_colors) + 
   geom_text(aes(x = max(date), y = yavg, label = label), hjust = 0, vjust = 0.5) + 
-  scale_x_date(date_breaks = "5 days", date_minor_breaks = "5 day",
+  scale_x_date(date_breaks = "7 days", date_minor_breaks = "5 day",
                date_labels = "%d/%m", limits = c(min(ft_world_data$date) + 7, NA), 
                expand = expansion(mult = c(0.01, 0.16))) +
   scale_y_continuous(breaks = NULL) +
