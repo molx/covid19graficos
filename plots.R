@@ -771,8 +771,10 @@ ft_rw_data <-  full_data %>% filter(!(location %in% compare2), location != "Worl
   mutate(location = "Outros")
 
 tot_order_world <- full_data %>% filter(location %in% compare2) %>%
-  full_join(ft_rw_data) %>% filter(date == max(date) - 1) %>%
-  arrange(new_cases)
+  full_join(ft_rw_data) %>% 
+  mutate(new_cases_ma = round(ma(new_cases, nma))) %>%
+  filter(date == max(date) - 1) %>%
+  arrange(new_cases_ma)
 
 ft_world_data <- full_data %>% filter(location %in% compare2) %>%
   full_join(ft_rw_data) %>%
@@ -798,7 +800,7 @@ ft_world_plot <- ft_world_data %>%
   geom_ribbon(aes(ymin = ymin, ymax = ymax, fill = location)) +
   scale_fill_manual(values = ftw_colors) + 
   geom_text(aes(x = max(date), y = yavg, label = label), hjust = 0, vjust = 0.5) + 
-  scale_x_date(date_breaks = "7 days", date_minor_breaks = "5 day",
+  scale_x_date(date_breaks = "7 days", date_minor_breaks = "1 day",
                date_labels = "%d/%m", limits = c(min(ft_world_data$date) + 7, NA), 
                expand = expansion(mult = c(0.01, 0.16))) +
   scale_y_continuous(breaks = NULL) +
