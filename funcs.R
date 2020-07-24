@@ -1,5 +1,5 @@
 datastyle <- list(theme_light(), #geom_line(size = 1), geom_point(),
-                  scale_x_date(date_breaks = "5 days", date_minor_breaks = "1 day",
+                  scale_x_date(date_breaks = "7 days", date_minor_breaks = "7 day",
                                date_labels = "%d/%m"),
                   theme(axis.text.x = element_text(angle = 45, hjust = 1),
                         plot.title = element_text(hjust = 0.5),

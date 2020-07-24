@@ -29,7 +29,7 @@ get_full_data_style <- function(mindeaths, group = "País") {
        ggtitle(paste("Óbitos após o", mindeaths, "º óbito")),
        theme(plot.title = element_text(hjust = 0.5),
              plot.margin = margin(0.2, 0.5, 0.2, 0.5, "cm")),
-       scale_x_continuous(breaks = seq(0, 100, 5), minor_breaks = seq(0, 100, 5)))
+       scale_x_continuous(breaks = seq(0, 100, 7), minor_breaks = seq(0, 100, 7)))
 }
 
 # source <- "Fonte: 2019 Novel Coronavirus COVID-19 (2019-nCoV)\nData Repository by Johns Hopkins CSSE\nhttps://github.com/CSSEGISandData/COVID-19"
@@ -275,7 +275,7 @@ brasil_dbl_plot <- brasil_dbl_time %>%
   geom_ribbon(aes(ymin = dbl_time_lwr, ymax = dbl_time_upr), fill = "grey70", alpha = 0.5) +
   geom_line() + geom_point() + ggtitle("Tempo de duplicação") +
   scale_y_continuous(breaks = seq(0, 100, 10), labels = seq(0, 100, 10),
-                     minor_breaks = seq(0, 100, 1)) +
+                     minor_breaks = seq(0, 100, 10)) +
   labs(x = "Data", y = "Tempo de duplicação (dias)")
   
 brasil_dbl_plot
@@ -288,11 +288,11 @@ br_ma_xlim = brasil_ma$date[which(brasil_ma$new_deaths_ma > 0)[1]]
 
 brasil_ma_plot <- ggplot(brasil_ma, aes(x = date, y = new_deaths_ma)) + theme_light() +
   geom_bar(stat = "identity", aes(x = date, y = new_deaths_ma), 
-           width = 0.5, position = position_dodge(width = 0.5)) +
+           width = 1) +
   #geom_step(size = 1, direction = "mid" ) +
   scale_y_continuous(limits = c(NA, max(brasil_ma$new_deaths_ma, na.rm = TRUE) * 1.20),
                      breaks = seq(0, 1250, 250)) +
-  scale_x_date(date_breaks = "7 days", date_minor_breaks = "1 day",
+  scale_x_date(date_breaks = "7 days", date_minor_breaks = "7 day",
              date_labels = "%d/%m", limits = c(br_ma_xlim, NA)) +
   theme(axis.text.x = element_text(angle = 45, hjust = 1),
         plot.title = element_text(hjust = 0.5),
@@ -333,7 +333,7 @@ for (uf in "Brasil") {
   p2 <- ggplot(ts, aes(x = date, y = new_deaths)) + datastyle +
     geom_bar(stat = "identity", width = 0.5, position = position_dodge(width = 0.5)) +
     scale_x_date(limits = c(min(filter(ts, total_deaths > 0)$date), NA),
-                 date_breaks = "7 days", date_minor_breaks = "1 day",
+                 date_breaks = "7 days", date_minor_breaks = "7 day",
                  date_labels = "%d/%m") +
     scale_y_continuous(breaks = pretty(tot_range_new),
                        limits = c(min(tot_range_new), max(tot_range_new) * 1.20)) +
@@ -541,8 +541,8 @@ comp_plot <- ggplot(comp_data, aes(day, total_deaths)) + full_data_style +
   labs(y = "Número de Casos (log10)",
        caption = "Fontes: https://ourworldindata.org/coronavirus") +
   scale_y_continuous(breaks = world_log_brks, minor_breaks = NULL, labels = pot10) +
-  scale_x_continuous(breaks = seq(0, max(comp_data$day) + 1, by = 5),
-                     minor_breaks = seq(0, max(comp_data$day) + 1, by = 1),
+  scale_x_continuous(breaks = seq(0, max(comp_data$day) + 1, by = 7),
+                     minor_breaks = seq(0, max(comp_data$day) + 1, by = 7),
                      expand = c(0, 1)) 
   # annotate("text", x = 2, y = max(comp_data$total_deaths), 
   #          label = "Fontes: https://ourworldindata.org/coronavirus\nMinistério da Saúde",
@@ -746,7 +746,7 @@ ft_data %>%
   geom_ribbon(aes(ymin = ymin, ymax = ymax, fill = location)) +
   scale_fill_manual(values = estados_colors) + 
   geom_text(aes(x = max(date), y = yavg, label = label), hjust = 0, vjust = 0.5) + 
-  scale_x_date(date_breaks = "7 days", date_minor_breaks = "1 day",
+  scale_x_date(date_breaks = "7 days", date_minor_breaks = "7 day",
                date_labels = "%d/%m") +
   scale_y_continuous(breaks = NULL) +
   theme(axis.text.x = element_text(angle = 45, hjust = 1),
@@ -800,7 +800,7 @@ ft_world_plot <- ft_world_data %>%
   geom_ribbon(aes(ymin = ymin, ymax = ymax, fill = location)) +
   scale_fill_manual(values = ftw_colors) + 
   geom_text(aes(x = max(date), y = yavg, label = label), hjust = 0, vjust = 0.5) + 
-  scale_x_date(date_breaks = "7 days", date_minor_breaks = "1 day",
+  scale_x_date(date_breaks = "7 days", date_minor_breaks = "7 day",
                date_labels = "%d/%m", limits = c(min(ft_world_data$date) + 7, NA), 
                expand = expansion(mult = c(0.01, 0.16))) +
   scale_y_continuous(breaks = NULL) +
