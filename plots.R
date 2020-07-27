@@ -152,15 +152,17 @@ brasil_log_plot + theme_light() + #datastyle + # ablines +
 
 ### Comparação inclinações vs isolamento
 
+comp_labels = format(seq(brasil_log_data$date[1], 
+                        brasil_log_data$date[1] + nrow(brasil_log_data) + est_pred_interval,
+                        by = "7 days"),
+                    format = "%d/%m")
+
 brasil_log_plot + theme_light() + #datastyle + # ablines + 
   theme(axis.text.x = element_text(angle = 45, hjust = 1), plot.title = element_text(hjust = 0.5)) +
   scale_x_continuous(limits = c(0, nrow(brasil_log_data) + est_pred_interval),
-                     breaks = seq(1, nrow(brasil_log_data) + est_pred_interval, 7) + 1, 
+                     breaks = seq(1, length.out = length(comp_labels), by = 7), 
                      minor_breaks = NULL,
-                     labels = format(seq(brasil_log_data$date[1], 
-                                         brasil_log_data$date[1] + nrow(brasil_log_data) + est_pred_interval,
-                                         by = "7 days"),
-                                     format = "%d/%m")) +
+                     labels = ) +
   scale_y_continuous(limits = c(0, NA), breaks = br_log_brks, labels = pot10l,
                      minor_breaks = NULL) +
   coord_cartesian(ylim = c(0, 5)) +
