@@ -331,7 +331,7 @@ for (uf in "Brasil") {
   p1
   tot_range_new <- seq(min(ts$new_deaths), max(ts$new_deaths))
   p2 <- ggplot(ts, aes(x = date, y = new_deaths)) + datastyle +
-    geom_bar(stat = "identity", width = 0.5, position = position_dodge(width = 0.5)) +
+    geom_bar(stat = "identity", width = 1) +
     scale_x_date(limits = c(min(filter(ts, total_deaths > 0)$date), NA),
                  date_breaks = "7 days", date_minor_breaks = "7 day",
                  date_labels = "%d/%m") +
